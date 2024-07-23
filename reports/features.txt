@@ -1,0 +1,73 @@
+Shot Distance : distance en pied
+X Location : abscisse en dizième de pied
+Y Location : ordonnée en dizième de pied
+Away Team : abbréviation de l'quipe visiteure 
+Season Type : regular ou playoff
+Year : année du match
+Shot Zone Basic_Above the Break 3 : vrai si zone du shoot = "Above the break" 
+Shot Zone Basic_Backcourt : vrai si zone du shoot = "Backcourt" 
+Shot Zone Basic_In The Paint (Non-RA) : vrai si zone du shoot = "In The Paint (Non-RA)"  
+Shot Zone Basic_Left Corner 3 : vrai si zone du shoot = "Left Corner 3"  
+Shot Zone Basic_Mid-Range : vrai si zone du shoot = "Mid-Range" 
+Shot Zone Basic_Restricted Area : vrai si zone du shoot = "Restricted Area" 
+Shot Zone Basic_Right Corner 3 : vrai si zone du shoot = "Right Corner 3" 
+Shot Zone Area_Back Court(BC) : vrai si zone du shoot = "Back Court(BC)" 
+Shot Zone Area_Center(C) : vrai si zone du shoot = "Center(C)" 
+Shot Zone Area_Left Side Center(LC) : vrai si zone du shoot = "Left Side Center(LC)" 
+Shot Zone Area_Left Side(L) : vrai si zone du shoot = "Left Side(L)"  
+Shot Zone Area_Right Side Center(RC) : vrai si zone du shoot = "Above the break" 
+Shot Zone Area_Right Side(R) : vrai si zone du shoot = "Right Side(R)" 
+Shot Zone Range_16-24 ft. : vrai si la distance est entre 16 et 24 pieds
+Shot Zone Range_24+ ft. : vrai si la distance est supérieure à 24 pieds
+Shot Zone Range_8-16 ft. : vrai si la distance est entre 8 et 16 pieds
+Shot Zone Range_Back Court Shot : vrai si le tir vient d'au dela de la ligne centrale
+Shot Zone Range_Less Than 8 ft. : vrai si la distance est inférieure à 8 pieds
+GAME_ID : identifiant du match  
+EVENTNUM : numéro d'évenement dans le match
+target : indique si le panier rentre ou non (variable cible)
+PERIOD : numéro du quart-temps en cours
+PLAYER1_NAME : nom du tireur 
+PLAYER1_TEAM_ABBREVIATION : abbreviation de l'équipe du tireur
+OPPONENT_TEAM : abbréviation de l'équipe opposée
+at_home : vrai si le tireur est à domicile
+PREVIOUS_OFF_REBOUND : vrai si l'action précédente était un rebond offensif  
+PREVIOUS_DEF_REBOUND : vrai si l'action précédente était un rebond défensif 
+PREVIOUS_OFF_TURNOVER : vrai si l'action précédente était une récupération de balle  
+PREVIOUS_OFF_MISSED : vrai si l'action précédente était un tir raté de la même équipe
+PREVIOUS_EVENTMSGTYPE : libellé de l'action précédente
+3PT : vrai si le tir est à 3 points
+jump_shot : vrai s'il s'agit d'un jump shot
+layup_shot : vrai s'il s'agit d'un layup shot
+dunk_shot : vrai s'il s'agit d'un dunk
+hook_shot : vrai s'il s'agit d'un hoot shot
+free_throw : vrai s'il s'agit d'un lancer franc
+minutes_left : nombre de minutes entières restantes avant la fin du quart-temps
+seconds_left : nombre de secondes restantes avant la fin du quart-temps
+Age : age du tireur
+TS% : True Shooting percentage
+PTM : nombre moyen de points marqués par minute de jeu
+ASTM : nombre moyen de passes décisives effectuées par minute de jeu
+ORBM : nombre moyen de rebonds offensifs captés par minute de jeu
+STLM : nombre moyen d'interceptions réalisées par minute de jeu
+BLKM : nombre moyen de contres effectués par minute de jeu
+TOVM : nombre moyen de pertes de balle commises par minute de jeu
+USG% :  pourcentage des possessions d'équipe utilisées par un joueur lorsqu'il est sur le terrain
+FG% : pourcentage de tirs réussis 
+2P% : pourcentage de tirs à 2 points réussis 
+3P% : pourcentage de tirs à 3 points réussis 
+FT% : pourcentage de lancers francs réussis
+PTS : total des poitns
+year_start : première année en NBA du tireur
+year_end : dernière année en NBA du tireur
+height : taille en cm
+weight : poids en livres
+C : position Pivot = Center
+PF : position ailier fort = Power Forward 
+PG : position Meneur = Point Guard
+PG-SG : position mixte
+SF : position ailier = Small Forward
+SF-SG : position mixte
+SG : position arrière = Shooting Guard
+SG-PG : position mixte
+E_DEF_RATING : taux de défense de l'équipe advers
+E_OFF_RATING : taux d'attaque de l'équipe du tireur

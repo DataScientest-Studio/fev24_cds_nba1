@@ -164,3 +164,7 @@ cython_debug/
 
 # Data folder
 data/
+
+notebooks/6.0-sarah-modelisation-test.ipynb
+notebooks/6.0-sarah-modelisation-test_per_player.ipynb
+notebooks/2.0-sarah-data-preprocessing copy.ipynb
