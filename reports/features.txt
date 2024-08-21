@@ -41,6 +41,7 @@ layup_shot : vrai s'il s'agit d'un layup shot
 dunk_shot : vrai s'il s'agit d'un dunk
 hook_shot : vrai s'il s'agit d'un hoot shot
 free_throw : vrai s'il s'agit d'un lancer franc
+DETAILLED_SHOT_TYPE : libellé du type de tir
 minutes_left : nombre de minutes entières restantes avant la fin du quart-temps
 seconds_left : nombre de secondes restantes avant la fin du quart-temps
 Age : age du tireur
@@ -71,3 +72,6 @@ SG : position arrière = Shooting Guard
 SG-PG : position mixte
 E_DEF_RATING : taux de défense de l'équipe advers
 E_OFF_RATING : taux d'attaque de l'équipe du tireur
+PCT_PREV_ACTION	: pourcentage de réussite du joueur en fonction de l'action précédente
+PCT_AREA : pourcentage de réussite du joueurs en fonction de sa position "Shot Zone Basic"  (pour les lancer francs, ils s'agit du pourcentage de réussite du joueur aux lancers francs)
+YEARS_EXP : Nombre d'année d'expérience en NBA du joueur au moment du tir
