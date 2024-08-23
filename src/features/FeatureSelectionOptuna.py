@@ -1,7 +1,9 @@
 import xgboost as xgb
 import numpy as np
 import optuna
-from sklearn.metrics import f1_score
+from sklearn.metrics import accuracy_score
+
+
 
 class FeatureSelectionOptuna:
     """
@@ -10,8 +12,7 @@ class FeatureSelectionOptuna:
     Parameters:
 
     - model (object): The predictive model to evaluate; this should be any object that implements fit() and predict() methods.
-    - loss_fn (function): The loss function to use for evaluating the model performance. This function should take the true labels and the
-                          predictions as inputs and return a loss value.
+    - score_fn (function): The function to use for evaluating the model performance. 
     - features (list of str): A list containing the names of all possible features that can be selected for the model.
     - X (DataFrame): The complete set of feature data (pandas DataFrame) from which subsets will be selected for training the model.
     - y (Series): The target variable associated with the X data (pandas Series).
@@ -21,7 +22,7 @@ class FeatureSelectionOptuna:
 
     def __init__(self,
                  model,
-                 loss_fn,
+                 score_fn,
                  features,
                  X,
                  y,
@@ -29,7 +30,7 @@ class FeatureSelectionOptuna:
                  penalty=0):
 
         self.model = model
-        self.loss_fn = loss_fn
+        self.score_fn = accuracy_score
         self.features = features
         self.X = X
         self.y = y
@@ -45,11 +46,11 @@ class FeatureSelectionOptuna:
         # List with names of selected features
         selected_feature_names = [name for name, selected in zip(self.features, selected_features) if selected]
 
-        # Optional: adds a penalty for the amount of features used
+         # Optional: adds a penalty for the amount of features used
         n_used = len(selected_feature_names)
         total_penalty = n_used * self.penalty
-
-        loss = 0
+    
+        score = 0
 
         for split in self.splits:
           train_idx = split[0]
@@ -63,41 +64,17 @@ class FeatureSelectionOptuna:
           X_train_selected = X_train[selected_feature_names].copy()
           X_valid_selected = X_valid[selected_feature_names].copy()
 
-          train = xgb.DMatrix(data=X_train_selected, label=y_train)
-          test = xgb.DMatrix(data=X_valid_selected, label=y_valid)
+          # Train model, get predictions and accumulate f1_score
+          self.model.fit(X_train_selected, y_train)
+          pred = self.model.predict(X_valid_selected)
 
-
-          param = {
-              "booster": "gbtree",
-              "lambda": 6.66e-06,
-              "alpha": 0.85,
-              "subsample": 0.50,
-              "colsample_bytree": 0.33,
-              "max_depth": 3,
-              "min_child_weight": 10,
-              "eta": 0.95,
-              "gamma": 0.32,
-              "grow_policy": "lossguide",
-          }
-
-          # Train model, get predictions and accumulate loss
-          bst = xgb.train(param, train)
-
-          pred = np.rint(bst.predict(test))
-
-          loss += self.loss_fn(y_valid, pred)
+          score += self.score_fn(y_valid, pred)
 
         # Take the average loss across all splits
-        loss /= len(self.splits)
+        score /= len(self.splits)
 
-        # Add the penalty to the loss
-        loss += total_penalty
+         # Add the penalty to the loss
+        score -= total_penalty
 
-        return loss
-    
-    def loss_fn(y_true, y_pred):
-      """
-      Returns the negative F1 score, to be treated as a loss function.
-      """
-      res = -f1_score(y_true, y_pred, average='weighted')
-      return res
+        return score
+
