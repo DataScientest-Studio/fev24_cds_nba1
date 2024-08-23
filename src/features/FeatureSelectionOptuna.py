@@ -1,5 +1,3 @@
-import xgboost as xgb
-import numpy as np
 import optuna
 from sklearn.metrics import accuracy_score
 
@@ -22,7 +20,6 @@ class FeatureSelectionOptuna:
 
     def __init__(self,
                  model,
-                 score_fn,
                  features,
                  X,
                  y,
