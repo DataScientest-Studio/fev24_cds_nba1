@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-
 #importer les packages
 
 import pandas as pd
-import numpy as np
 import streamlit as st
 import os
 
@@ -19,22 +16,10 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 
-df = pd.read_csv('C:/Users/mboko/PycharmProjects/nba_intro/Players.csv')
 
-df1 = pd.read_csv('C:/Users/mboko/PycharmProjects/nba_intro/Seasons_Stats.csv')
+df_fin = pd.read_csv('data/processed/stat_joueurs_streamlit.csv')
 
-df2 = pd.read_csv('C:/Users/mboko/PycharmProjects/nba_intro/seasons_stats_2018-2020.csv')
-
-df3 = pd.read_csv('C:/Users/mboko/PycharmProjects/nba_intro/player_data.csv')
-
-df4 = pd.read_csv('C:/Users/mboko/PycharmProjects/nba_intro/players (1).csv')
-
-df5 = pd.read_csv('C:/Users/mboko/PycharmProjects/nba_intro/teams.csv')
-
-df_fin = pd.read_csv('C:/Users/mboko/PycharmProjects/nba_intro/stat_joueurs_streamlit.csv')
-
-df10 = pd.read_csv('C:/Users/mboko/PycharmProjects/nba_intro/all_shots_2000-2020_shot_types_categorized.csv')
-
+df10 = pd.read_csv('data/processed/all_shots_2000-2020_shot_types_categorized.csv')
 
 st.sidebar.title("Sommaire")
 
