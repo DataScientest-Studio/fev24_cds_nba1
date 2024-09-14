@@ -23,7 +23,7 @@ df10 = pd.read_csv('data/processed/all_shots_2000-2020_shot_types_categorized.cs
 
 st.sidebar.title("Sommaire")
 
-pages = ["Description du projet", "Exploration des données", "Analyse de données", "Stat des  joueurs","Modélisation"]
+pages = ["Description du projet", "Exploration des données", "Analyse de données", "Stat des  joueurs", "Modélisation"]
 
 page = st.sidebar.radio("Aller vers la page :", pages)
 
