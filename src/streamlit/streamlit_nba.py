@@ -4,17 +4,11 @@ import pandas as pd
 import streamlit as st
 import os
 
-
 import matplotlib.pyplot as plt
-import seaborn as sns
+#import seaborn as sns
 
-from sklearn.preprocessing import LabelEncoder
-import pickle
-from sklearn.model_selection import StratifiedShuffleSplit, train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score
+#import pickle
+#from sklearn.metrics import accuracy_score
 
 
 df_fin = pd.read_csv('data/processed/stat_joueurs_streamlit.csv')
@@ -23,40 +17,38 @@ df10 = pd.read_csv('data/processed/all_shots_2000-2020_shot_types_categorized.cs
 
 st.sidebar.title("Sommaire")
 
-pages = ["Description du projet", "Exploration des données", "Analyse de données", "Stat des  joueurs", "Modélisation"]
+pages = ["Description du projet", "Exploration des données", "Stat des  joueurs", "Modélisation"]
 
 page = st.sidebar.radio("Aller vers la page :", pages)
 
-blank = ['Choisi un joueur']
+blank = ['Choisir un joueur']
 liste_joueurs = df_fin['Player'].unique()
 blank.extend(liste_joueurs)
 
 # Add a selectbox to the sidebar:
-
 result_joueur = st.sidebar.selectbox(
-    'Choisi un joueur', blank
+    'Choisir un joueur', blank
 )
-#result_annee = df_fin['Year'].loc[df_fin['Player'] == result_joueur]
-#result_annee = None
-# choix de l'année de jeu
-
-
 
 if result_joueur != '':
-    # Récupérer les années disponibles pour le joueur sélectionné
+    # Récupérer les saisons disponibles pour le joueur sélectionné
     annees_disponibles = df_fin['Year'].loc[df_fin['Player'] == result_joueur].unique()
 
 
-    # Sidebar pour sélectionner l'année
-    result_annee = st.sidebar.selectbox("Choisissez une année:", annees_disponibles)
+    # Sidebar pour sélectionner la saison
+    result_annee = st.sidebar.selectbox("Choisir une saison:", annees_disponibles)
 
-    # Afficher l'année sélectionnée
-    st.sidebar.write(f"L'année sélectionnée est: {result_annee}")
+    # Afficher la saison sélectionnée
+    st.sidebar.write(f"La saison sélectionnée est: {result_annee}")
     # Affichez le bouton de choix de
     if st.sidebar.button('Choisir la page'):
         st.sidebar.write("Bouton de choix de page cliqué")
         page = pages[3]
 
+
+#########################################################################################################################################
+#                                                           PAGE DESCRIPTION DU PROJET                                                  #
+#########################################################################################################################################
 
 if page == pages[0] :
     st.write('### Description du projet')
@@ -84,26 +76,36 @@ if page == pages[0] :
 
     st.write("Sur ce bonne exploration")
 
-    st.image("C:/Users/mboko/PycharmProjects/nba_intro/jordan.jpg")
+    st.image("reports/pictures/jordan.jpg")
+
+
+#########################################################################################################################################
+#                                                           PAGE EXPLORATION DES DONNEES                                                #
+#########################################################################################################################################
+
 
 elif page == pages[1]:
     st.write("### Exploration des données")
 
     st.write("## A remplir")
+    st.write("""Nous avons à notre disposition plusieurs datasets :
+             1. """)
+
+
+#########################################################################################################################################
+#                                                           PAGE STATS JOUEURS                                                          #
+#########################################################################################################################################
+
 
 elif page == pages[2]:
-    st.write("### Analyse de données")
-
-    st.write("## A remplir")
-
-elif page == pages[3]:
 
     st.write("### Stats des joueurs")
 
     st.write("Ici nous pouvons voir les statistiques des joueurs ainsi que leurs positions préférentiel sur le terrain")
 
     st.write("###", result_joueur)
-    pts_moyen = df_fin['PTM'].loc[(df_fin['Player'] == result_joueur) & (df_fin['Year'] == result_annee)].unique()[0]
+    if not result_joueur == "Choisir un joueur":
+        pts_moyen = df_fin['PTM'].loc[(df_fin['Player'] == result_joueur) & (df_fin['Year'] == result_annee)].unique()[0]
 
     # Création des colonnes
     col1, col2 = st.columns(2)
@@ -118,7 +120,7 @@ elif page == pages[3]:
 
     # Contenu de la colonne de gauche
     def get_image_path(player_name):
-        return f"C:/Users/mboko/PycharmProjects/nba_intro/{result_joueur}.png"
+        return f"reports/pictures/{result_joueur}.png"
 
 
     # Obtenir le chemin de l'image
@@ -127,7 +129,7 @@ elif page == pages[3]:
     with col2:
         # Vérifier si le fichier existe
         if os.path.exists(image_path):
-            st.image(image_path)
+            st.image(image_path, width=250)
         else:
             st.write(f"L'image pour {result_joueur} n'a pas été trouvée à l'emplacement {image_path}.")
         #st.image(image_path)
@@ -181,16 +183,16 @@ elif page == pages[3]:
 
 
     def draw_basketball_court(joueur, annee):
-        fig, ax = plt.subplots(figsize=(12, 8))
+        fig, ax = plt.subplots(figsize=(8, 8))
         # Changer la couleur de fond de la figure
         background_img = mpimg.imread(
-            'C:/Users/mboko/PycharmProjects/nba_intro/Hardwood basketball court floor viewed from above _ My Affordable Flooring.jpg')
+            'reports/pictures/Hardwood basketball court floor viewed from above _ My Affordable Flooring.jpg')
 
         # Afficher l'image de fond
-        ax.imshow(background_img, extent=[0, 50, 0, 94], aspect='auto')
+        ax.imshow(background_img, extent=[0, 50, 0, 47], aspect='auto')
 
         # Dimensions du terrain de basket-ball en pieds
-        court_length_ft = 94
+        court_length_ft = 47
         court_width_ft = 50
 
         # Ligne de fond
@@ -205,38 +207,31 @@ elif page == pages[3]:
         basket_circle_radius_ft = 1  # Rayon du cercle central
         ax.add_patch(
             patches.Circle((court_width_ft / 2, 5.5), basket_circle_radius_ft, color='black', fill=False, linewidth=1))
-        ax.add_patch(
-            patches.Circle((court_width_ft / 2, 88.5), basket_circle_radius_ft, color='black', fill=False, linewidth=1))
+
 
         # cercle central
         center_circle_radius_ft = 6  # Rayon du cercle central
-        ax.add_patch(patches.Circle((court_width_ft / 2, court_length_ft / 2), center_circle_radius_ft, color='black',
+        ax.add_patch(patches.Circle((court_width_ft / 2, court_length_ft), center_circle_radius_ft, color='black',
                                     fill=False, linewidth=2))
 
         # cercle ligne des lancers francs
         center_circle_radius_ft = 6  # Rayon du cercle central
         ax.add_patch(
             patches.Circle((court_width_ft / 2, 19), center_circle_radius_ft, color='black', fill=False, linewidth=2))
-        ax.add_patch(
-            patches.Circle((court_width_ft / 2, 75), center_circle_radius_ft, color='black', fill=False, linewidth=2))
-
-        # position du panier
-        basket_dist = 4  # Distance entre le panier et la ligne de fond
 
         # Ligne des 3 points
         three_point_dist_ft = 23.9  # Distance du panier
-        corner_three_dist_ft = 22  # Distance du coin
-        three_point_radius_ft = 22 / 12  # Rayon du cercle
-        ax.plot([0, 0], [0, three_point_dist_ft], linewidth=2, color='black')
-        ax.plot([court_width_ft, court_width_ft], [4, three_point_dist_ft], linewidth=2, color='black')
-        ax.plot([0, 0], [court_length_ft - three_point_dist_ft, court_length_ft], linewidth=2, color='black')
+
+        #ax.plot([0, 0], [0, three_point_dist_ft], linewidth=2, color='black')
+        #ax.plot([court_width_ft, court_width_ft], [4, three_point_dist_ft], linewidth=2, color='black')
+        #ax.plot([0, 0], [court_length_ft - three_point_dist_ft, court_length_ft], linewidth=2, color='black')
         # ax.plot([court_width_ft, court_width_ft], [court_length_ft-three_point_dist_ft, court_length_ft], linewidth=2, color='black')
         ax.add_patch(
             patches.Arc((court_width_ft / 2, three_point_dist_ft / (3.14 * 2)), width=48.3, height=50, theta1=25,
                         theta2=155, linewidth=2, color='black'))
-        ax.add_patch(
-            patches.Arc((court_width_ft / 2, court_length_ft - three_point_dist_ft / (3.14 * 2)), width=48.3, height=50,
-                        theta1=205, theta2=335, linewidth=2, color='black'))
+        #ax.add_patch(
+         #   patches.Arc((court_width_ft / 2, court_length_ft - three_point_dist_ft / (3.14 * 2)), width=48.3, height=50,
+          #              theta1=205, theta2=335, linewidth=2, color='black'))
 
         # Raquettes
         paint_width_ft = 16  # Largeur de la raquette
@@ -246,13 +241,6 @@ elif page == pages[3]:
         ax.plot([17, 17], [0, paint_length_ft], linewidth=2, color='black')
         ax.plot([17 + paint_width_ft, 17 + paint_width_ft], [0, paint_length_ft], linewidth=2, color='black')
 
-        ax.plot([17, 17 + paint_width_ft], [75, 75], linewidth=2, color='black')
-        ax.plot([17, 17 + paint_width_ft], [paint_length_ft, paint_length_ft], linewidth=2, color='black')
-        ax.plot([17, 17], [75, court_length_ft], linewidth=2, color='black')
-        ax.plot([17 + paint_width_ft, 17 + paint_width_ft], [75, court_length_ft], linewidth=2, color='black')
-
-        # ligne médiane
-        ax.plot([court_width_ft, 0], [47, 47], linewidth=2, color='black')
 
         # ligne planche
         ax.plot([22, 28], [4, 4], linewidth=2, color='black')
@@ -262,9 +250,6 @@ elif page == pages[3]:
         ax.plot([3, 3], [0, 14], linewidth=2, color='black')
         ax.plot([47, 47], [0, 14], linewidth=2, color='black')
 
-        # ligne 3pts side line haut
-        ax.plot([3, 3], [court_length_ft, 80], linewidth=2, color='black')
-        ax.plot([47, 47], [court_length_ft, 80], linewidth=2, color='black')
 
         # ax.add_patch(patches.Arc((court_width_ft/2, 9/(3.14*2)), width=10, height=10, theta1=0, theta2=180, linewidth=2, color='black'))
 
@@ -356,7 +341,14 @@ elif page == pages[3]:
     # Appel de la fonction pour dessiner le terrain de basket-ball
     draw_basketball_court(result_joueur, result_annee)
 
-elif page == pages[4]:
+
+
+
+
+#########################################################################################################################################
+#                                                           PAGE MODELISATION                                                           #
+#########################################################################################################################################
+elif page == pages[3]:
     st.write("### Modélisation")
 
     st.write("## A remplir")
