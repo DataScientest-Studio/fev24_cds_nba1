@@ -3,23 +3,28 @@
 import pandas as pd
 import streamlit as st
 import os
-
 import matplotlib.pyplot as plt
 #import seaborn as sns
 
 #import pickle
 #from sklearn.metrics import accuracy_score
 
+@st.cache_data
+def load_data():
+    df_fin = pd.read_csv('data/processed/stat_joueurs_streamlit.csv')
+    df10 = pd.read_csv('data/processed/all_shots_2000-2020_shot_types_categorized.csv')
+    df_pbp_sample = pd.read_csv('data/raw/missing_pbp_2019-2020.csv', nrows=5, index_col=0)
+    df_all_shots = pd.read_csv('data/processed/all_shots-v6.csv', nrows=5, index_col=0)
+    return df_fin, df10, df_pbp_sample, df_all_shots
 
-df_fin = pd.read_csv('data/processed/stat_joueurs_streamlit.csv')
+# Chargement des données
+df_fin, df10, df_pbp_sample, df_all_shots = load_data()
 
-df10 = pd.read_csv('data/processed/all_shots_2000-2020_shot_types_categorized.csv')
-
+# Sidebar de navigation
 st.sidebar.title("Sommaire")
-
-pages = ["Description du projet", "Exploration des données", "Stat des  joueurs", "Modélisation"]
-
+pages = ["Description du projet", "Exploration des données", "Preprocessing",  "Stat des  joueurs", "Modélisation"]
 page = st.sidebar.radio("Aller vers la page :", pages)
+
 
 blank = ['Choisir un joueur']
 liste_joueurs = df_fin['Player'].unique()
@@ -51,7 +56,7 @@ if result_joueur != '':
 #########################################################################################################################################
 
 if page == pages[0] :
-    st.write('### Description du projet')
+    st.write('## Description du projet')
     st.write("Les sports américains sont très friands de statistiques, et la NBA (National Basketball Association) ne fait pas exception à la règle. ")
 
     st.write("Le développement constant des nouvelles technologies et des outils numériques, permet désormais de suivre en temps réel les déplacements de tous les joueurs sur un terrain de basket. Les données recueillies sont ainsi très nombreuses et riches.")
@@ -85,11 +90,43 @@ if page == pages[0] :
 
 
 elif page == pages[1]:
-    st.write("### Exploration des données")
+    st.write("## Exploration des données")
 
+    """Pour ce projet, les données viennent de multiples sources.
+    L'enjeu était d'extraire les variables utiles pour notre prédiction et de fusionner les datasets pour n'en former qu'un.
+    """
+    st.image("src/streamlit/figures/data_merge.png")
+
+    st.write("### Play by Play")
+    """Les fichiers 'play by play' (ou action par action en français) recensent pour chaque année entre 2000 et 2020 l’intégralité des actions de jeu, de l’entre-deux jusqu’au buzzer final. Ils contiennent chacun entre 500k et 600k lignes.\n
+    """
+    st.dataframe(df_pbp_sample)
+    """Pour gérer les dataset play by play, nous avons identifié les actions que nous souhaitions garder: """
+    
+    st.write("### Shots locations")
+
+    st.write("### Players and teams stats")
+
+
+#########################################################################################################################################
+#                                                           PAGE DATASET FUSIONNÉ                                                           #
+#########################################################################################################################################
+elif page == pages[2]:
+    st.write("## Preprocessing")
+
+    """Désormais notre dataset est nettoyé. Il ne contient plus de valeurs manquantes ni doublons et il ne contient que les actions de tir des 20 meilleurs joueurs du 21ème siècle."""
+
+
+    st.dataframe(df_all_shots)
+
+    """Cependant, il contient encore des variables non numériques comme les abbréviations des équipes, ainsi que des variables numériques qui risquent de fausser les résultats du modèles comme le numéro du match.
+    Et surtout, notre dataset fusionné contient beaucoup de variables ce qui risque de poser divers problèmes :"""
+    st.markdown("""
+        * Risque de surapprentissage
+* Temprs d'entrainement accru
+* Multi colinéarité entre les variables
+    """)
     st.write("## A remplir")
-    st.write("""Nous avons à notre disposition plusieurs datasets :
-             1. """)
 
 
 #########################################################################################################################################
@@ -97,9 +134,9 @@ elif page == pages[1]:
 #########################################################################################################################################
 
 
-elif page == pages[2]:
+elif page == pages[3]:
 
-    st.write("### Stats des joueurs")
+    st.write("## Stats des joueurs")
 
     st.write("Ici nous pouvons voir les statistiques des joueurs ainsi que leurs positions préférentiel sur le terrain")
 
@@ -178,80 +215,21 @@ elif page == pages[2]:
     top_positions = top_positions.groupby(['PLAYER1_NAME', 'Year']).head(10)
 
     import matplotlib.pyplot as plt
-    import matplotlib.patches as patches
     import matplotlib.image as mpimg
 
 
     def draw_basketball_court(joueur, annee):
         fig, ax = plt.subplots(figsize=(8, 8))
         # Changer la couleur de fond de la figure
-        background_img = mpimg.imread(
-            'reports/pictures/Hardwood basketball court floor viewed from above _ My Affordable Flooring.jpg')
+        background_img = mpimg.imread('reports/figures/saved_court.png')
 
         # Afficher l'image de fond
-        ax.imshow(background_img, extent=[0, 50, 0, 47], aspect='auto')
+        ax.imshow(background_img, extent=[0, 50, 0, 50], aspect='auto')
 
         # Dimensions du terrain de basket-ball en pieds
         court_length_ft = 47
         court_width_ft = 50
 
-        # Ligne de fond
-        ax.plot([0, court_width_ft], [0, 0], linewidth=2, color='black')
-        ax.plot([0, court_width_ft], [court_length_ft, court_length_ft], linewidth=2, color='black')
-
-        # Lignes de côté
-        ax.plot([0, 0], [0, court_length_ft], linewidth=2, color='black')
-        ax.plot([court_width_ft, court_width_ft], [0, court_length_ft], linewidth=2, color='black')
-
-        # arceau
-        basket_circle_radius_ft = 1  # Rayon du cercle central
-        ax.add_patch(
-            patches.Circle((court_width_ft / 2, 5.5), basket_circle_radius_ft, color='black', fill=False, linewidth=1))
-
-
-        # cercle central
-        center_circle_radius_ft = 6  # Rayon du cercle central
-        ax.add_patch(patches.Circle((court_width_ft / 2, court_length_ft), center_circle_radius_ft, color='black',
-                                    fill=False, linewidth=2))
-
-        # cercle ligne des lancers francs
-        center_circle_radius_ft = 6  # Rayon du cercle central
-        ax.add_patch(
-            patches.Circle((court_width_ft / 2, 19), center_circle_radius_ft, color='black', fill=False, linewidth=2))
-
-        # Ligne des 3 points
-        three_point_dist_ft = 23.9  # Distance du panier
-
-        #ax.plot([0, 0], [0, three_point_dist_ft], linewidth=2, color='black')
-        #ax.plot([court_width_ft, court_width_ft], [4, three_point_dist_ft], linewidth=2, color='black')
-        #ax.plot([0, 0], [court_length_ft - three_point_dist_ft, court_length_ft], linewidth=2, color='black')
-        # ax.plot([court_width_ft, court_width_ft], [court_length_ft-three_point_dist_ft, court_length_ft], linewidth=2, color='black')
-        ax.add_patch(
-            patches.Arc((court_width_ft / 2, three_point_dist_ft / (3.14 * 2)), width=48.3, height=50, theta1=25,
-                        theta2=155, linewidth=2, color='black'))
-        #ax.add_patch(
-         #   patches.Arc((court_width_ft / 2, court_length_ft - three_point_dist_ft / (3.14 * 2)), width=48.3, height=50,
-          #              theta1=205, theta2=335, linewidth=2, color='black'))
-
-        # Raquettes
-        paint_width_ft = 16  # Largeur de la raquette
-        paint_length_ft = 19  # Longueur de la raquette
-        ax.plot([17, 17 + paint_width_ft], [0, 0], linewidth=2, color='black')
-        ax.plot([17, 17 + paint_width_ft], [paint_length_ft, paint_length_ft], linewidth=2, color='black')
-        ax.plot([17, 17], [0, paint_length_ft], linewidth=2, color='black')
-        ax.plot([17 + paint_width_ft, 17 + paint_width_ft], [0, paint_length_ft], linewidth=2, color='black')
-
-
-        # ligne planche
-        ax.plot([22, 28], [4, 4], linewidth=2, color='black')
-        ax.plot([22, 28], [90, 90], linewidth=2, color='black')
-
-        # ligne 3pts side line bas
-        ax.plot([3, 3], [0, 14], linewidth=2, color='black')
-        ax.plot([47, 47], [0, 14], linewidth=2, color='black')
-
-
-        # ax.add_patch(patches.Arc((court_width_ft/2, 9/(3.14*2)), width=10, height=10, theta1=0, theta2=180, linewidth=2, color='black'))
 
         # Extraire les coordonnées X et Y des tuples dans la colonne 'Position'
         top_positions['X'] = top_positions['Position'].apply(lambda pos: pos[0])
@@ -285,11 +263,6 @@ elif page == pages[2]:
         ax.set_xlabel('Largeur (pieds)')
         ax.set_ylabel('Longueur (pieds)')
 
-
-        # Effacer les axes
-        # ax.axis('off')
-
-        #plt.show()
         st.pyplot(fig)
 
     # Filtrer les données pour un joueur
@@ -343,12 +316,10 @@ elif page == pages[2]:
 
 
 
-
-
 #########################################################################################################################################
 #                                                           PAGE MODELISATION                                                           #
 #########################################################################################################################################
-elif page == pages[3]:
+elif page == pages[4]:
     st.write("### Modélisation")
 
     st.write("## A remplir")
