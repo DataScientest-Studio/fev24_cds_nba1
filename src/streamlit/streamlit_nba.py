@@ -95,26 +95,89 @@ elif page == pages[1]:
     """Pour ce projet, les données viennent de multiples sources.
     L'enjeu était d'extraire les variables utiles pour notre prédiction et de fusionner les datasets pour n'en former qu'un.
     """
-    st.image("src/streamlit/figures/data_merge.png")
+
 
     st.write("### Play by Play")
-    """Les fichiers 'play by play' (ou action par action en français) recensent pour chaque année entre 2000 et 2020 l’intégralité des actions de jeu, de l’entre-deux jusqu’au buzzer final. Ils contiennent chacun entre 500k et 600k lignes.\n
+    """Les fichiers 'play by play' (ou action par action en français) recensent pour chaque année entre 2000 et 2020 l’intégralité des actions de jeu, de l’entre-deux jusqu’au buzzer final. Ils contiennent 33 colonnes et chacun entre 500k et 600k lignes.
     """
+
     st.dataframe(df_pbp_sample)
-    """Pour gérer les dataset play by play, nous avons identifié les actions que nous souhaitions garder: """
-    
+
+    st.write("#### Analyse univariée")
+
+    "Comme on peut le voir ci-dessus, les play by play contiennent de nombreuses valeurs manquantes et l'encodage des variables n'est pas forcément intelligible. Ci-dessous l'ensemble des types d'actions:"
+
+    st.image("src/streamlit/figures/action_types.png")
+
+    "Les dix principaux types de tirs :"
+    st.image("src/streamlit/figures/shot_types.png")
+
+
+    "Après exploration du fichier nous décidons de garder les actions dont la variable EVENTMSGTYPE est :"
+    st.markdown("""
+                * 1 : Tir marqué
+        * 2 : Tir raté
+        * 3 : Lancer franc
+    """)
+    "Une fois les tirs identifiés et filtrés, nous pouvons regarder la distribution de notre **variable cible**. Les classes sont légèrement déséquilibrées avec plus de tir réussis que ratés."
+
+    st.image(["src/streamlit/figures/class_distribution.png"])
+
+    ""
+
+    st.write("#### Analyse bivariée")
+    "Dans cette section nous cherchons à analyser l'impact d'une variable sur la variable cible."
+    st.image(["src/streamlit/figures/shots_per_player.png"])
+    st.image(["src/streamlit/figures/shots_per_team.png"])
+    st.image(["src/streamlit/figures/shots_vs_period.png"])
+    st.image(["src/streamlit/figures/success_by_shot.png"])
+    st.image(["src/streamlit/figures/success_by_previous_actions.png"])
+
+
+
+    "**Note** : Pour éviter une fuite de données nous supprimerons les colonnes relatives au player2 et player3 qui sont respectivement présentes lorsqu'il y a une passe décisive (=tir marqué) ou un block (=tir raté)."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     st.write("### Shots locations")
+
+        ##### A REMPLIR FATIHA #####
 
     st.write("### Players and teams stats")
 
+        ##### A REMPLIR STÉPHANE #####
+
+
 
 #########################################################################################################################################
-#                                                           PAGE DATASET FUSIONNÉ                                                           #
+#                                                           PAGE PREPROCESSING                                                         #
 #########################################################################################################################################
 elif page == pages[2]:
     st.write("## Preprocessing")
+    """L'exploration des données nous a permi de sélectionner et nettoyer les variables nécessaires à la modélisation.
+    Ensuite nous avons fusionné les différents datasets pour n'en créé qu'un:"""
 
-    """Désormais notre dataset est nettoyé. Il ne contient plus de valeurs manquantes ni doublons et il ne contient que les actions de tir des 20 meilleurs joueurs du 21ème siècle."""
+    st.image("src/streamlit/figures/data_merge.png")
+
+    """Notre dataset est désormais nettoyé et fussioné, il ne contient plus de valeurs manquantes ni doublons et il ne contient que les actions de tir des 20 meilleurs joueurs du 21ème siècle."""
 
 
     st.dataframe(df_all_shots)

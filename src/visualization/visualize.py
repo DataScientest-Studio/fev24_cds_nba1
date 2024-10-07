@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import matplotlib.image as mpimg
-from matplotlib.transforms import Bbox
 
 
 def draw_basketball_court(joueur, annee):
