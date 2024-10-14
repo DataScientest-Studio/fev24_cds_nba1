@@ -15,40 +15,26 @@ def load_data():
     df10 = pd.read_csv('data/processed/all_shots_2000-2020_shot_types_categorized.csv')
     df_pbp_sample = pd.read_csv('data/raw/missing_pbp_2019-2020.csv', nrows=5, index_col=0)
     df_all_shots = pd.read_csv('data/processed/all_shots-v6.csv', nrows=5, index_col=0)
-    return df_fin, df10, df_pbp_sample, df_all_shots
+    df_final = pd.read_csv('data/processed/all_shots_final-v2.csv', nrows=5, index_col=0)
+    return df_fin, df10, df_pbp_sample, df_all_shots, df_final
+
+# Agrandir la colonne principale d'affichage
+st.set_page_config(layout="wide")
 
 # Chargement des données
-df_fin, df10, df_pbp_sample, df_all_shots = load_data()
+df_fin, df10, df_pbp_sample, df_all_shots, df_final = load_data()
 
 # Sidebar de navigation
 st.sidebar.title("Sommaire")
-pages = ["Description du projet", "Exploration des données", "Preprocessing",  "Stat des  joueurs", "Modélisation"]
+pages = ["Description du projet", "Exploration des données", "Preprocessing",  "Stat des  joueurs", "Modélisation", "Démo !"]
 page = st.sidebar.radio("Aller vers la page :", pages)
 
 
-blank = ['Choisir un joueur']
-liste_joueurs = df_fin['Player'].unique()
-blank.extend(liste_joueurs)
 
-# Add a selectbox to the sidebar:
-result_joueur = st.sidebar.selectbox(
-    'Choisir un joueur', blank
-)
-
-if result_joueur != '':
-    # Récupérer les saisons disponibles pour le joueur sélectionné
-    annees_disponibles = df_fin['Year'].loc[df_fin['Player'] == result_joueur].unique()
-
-
-    # Sidebar pour sélectionner la saison
-    result_annee = st.sidebar.selectbox("Choisir une saison:", annees_disponibles)
-
-    # Afficher la saison sélectionnée
-    st.sidebar.write(f"La saison sélectionnée est: {result_annee}")
-    # Affichez le bouton de choix de
-    if st.sidebar.button('Choisir la page'):
-        st.sidebar.write("Bouton de choix de page cliqué")
-        page = pages[3]
+    # # Affichez le bouton de choix de
+    # if st.sidebar.button('Choisir la page'):
+    #     st.sidebar.write("Bouton de choix de page cliqué")
+    #     page = pages[3]
 
 
 #########################################################################################################################################
@@ -56,7 +42,7 @@ if result_joueur != '':
 #########################################################################################################################################
 
 if page == pages[0] :
-    st.write('## Description du projet')
+    st.write('# Description du projet')
     st.write("Les sports américains sont très friands de statistiques, et la NBA (National Basketball Association) ne fait pas exception à la règle. ")
 
     st.write("Le développement constant des nouvelles technologies et des outils numériques, permet désormais de suivre en temps réel les déplacements de tous les joueurs sur un terrain de basket. Les données recueillies sont ainsi très nombreuses et riches.")
@@ -67,11 +53,11 @@ if page == pages[0] :
 
     st.write("    2.  Pour chacun de ces 20 joueurs encore actifs aujourd’hui (de LeBron James à Giannis Antetokounmpo), estimer à l’aide d’un modèle la probabilité qu’a leur tir de rentrer dans le panier, en fonction de différentes métriques.")
 
-    st.write("### Problématique")
+    st.write("## Problématique")
 
     st.write("Nous sommes face à un problème de classification, nous devons déterminer si le tir rentre ou non dans le panier en nous basant sur les données de localisation du tir, les performances du joueur et de son équipe, la situation de jeu. ")
 
-    st.write("### Datasets")
+    st.write("## Datasets")
 
     st.write("L’ensemble de ces données peuvent également être récupérées via des API qui scrappent NBA.com, le site officiel.")
 
@@ -90,27 +76,30 @@ if page == pages[0] :
 
 
 elif page == pages[1]:
-    st.write("## Exploration des données")
+    st.write("# Exploration des données")
 
     """Pour ce projet, les données viennent de multiples sources.
-    L'enjeu était d'extraire les variables utiles pour notre prédiction et de fusionner les datasets pour n'en former qu'un.
+    Les datasets à notre disposition sont les actions de jeu (play by play), les localisations des tirs (shot locations) ainsi que les statistiques par joueur et par équipe pour chaque saison.
     """
 
-
-    st.write("### Play by Play")
+    st.write("## Play by Play")
     """Les fichiers 'play by play' (ou action par action en français) recensent pour chaque année entre 2000 et 2020 l’intégralité des actions de jeu, de l’entre-deux jusqu’au buzzer final. Ils contiennent 33 colonnes et chacun entre 500k et 600k lignes.
     """
 
     st.dataframe(df_pbp_sample)
 
-    st.write("#### Analyse univariée")
+    st.write("### Analyse univariée")
 
-    "Comme on peut le voir ci-dessus, les play by play contiennent de nombreuses valeurs manquantes et l'encodage des variables n'est pas forcément intelligible. Ci-dessous l'ensemble des types d'actions:"
+    "Comme on peut le voir ci-dessus, les play by play contiennent de nombreuses **valeurs manquantes** et l'encodage des variables n'est pas forcément intelligible. Ci-dessous l'ensemble des types d'actions:"
+    "Pour éviter une fuite de données nous supprimerons les colonnes relatives au player2 et player3 qui sont respectivement présentes lorsqu'il y a une passe décisive (=tir marqué) ou un block (=tir raté) et ne peuvent pas être connue à priori."
 
-    st.image("src/streamlit/figures/action_types.png")
+    _, cent_co, _ = st.columns([1,3,1])
+    with cent_co:
+        st.image("src/streamlit/figures/action_types.png")
+        "Les dix principaux types de tirs :"
 
-    "Les dix principaux types de tirs :"
-    st.image("src/streamlit/figures/shot_types.png")
+    with cent_co:
+        st.image("src/streamlit/figures/shot_types.png")
 
 
     "Après exploration du fichier nous décidons de garder les actions dont la variable EVENTMSGTYPE est :"
@@ -120,48 +109,39 @@ elif page == pages[1]:
         * 3 : Lancer franc
     """)
     "Une fois les tirs identifiés et filtrés, nous pouvons regarder la distribution de notre **variable cible**. Les classes sont légèrement déséquilibrées avec plus de tir réussis que ratés."
+    _, cent_co, _ = st.columns([1,3,1])
+    with cent_co:
+        st.image(["src/streamlit/figures/class_distribution.png"])
 
-    st.image(["src/streamlit/figures/class_distribution.png"])
 
-    ""
 
-    st.write("#### Analyse bivariée")
+    st.write("### Analyse bivariée")
     "Dans cette section nous cherchons à analyser l'impact d'une variable sur la variable cible."
-    st.image(["src/streamlit/figures/shots_per_player.png"])
-    st.image(["src/streamlit/figures/shots_per_team.png"])
-    st.image(["src/streamlit/figures/shots_vs_period.png"])
-    st.image(["src/streamlit/figures/success_by_shot.png"])
-    st.image(["src/streamlit/figures/success_by_previous_actions.png"])
+
+    col1, col2 = st.columns(2)
+    with col1:
+        st.image("src/streamlit/figures/shots_per_player.png")
+    with col2:
+        st.image("src/streamlit/figures/shots_per_team.png")
+
+    "Nous pouvons voir que les joueurs et les équipes ne tirent pas le même nombre de tirs. Les joueurs les plus prolifiques sont souvent les plus talentueux et les équipes les plus performantes sont celles qui tirent le plus."
+    "Notre dataset est donc **déséquilibré** en terme de nombre de tirs par joueur et par équipe."
 
 
+    _, cent_co, _ = st.columns([1,3,1])
+    with cent_co:
+        st.image(["src/streamlit/figures/success_by_shot.png"])
+        st.image(["src/streamlit/figures/success_by_previous_actions.png"])
 
-    "**Note** : Pour éviter une fuite de données nous supprimerons les colonnes relatives au player2 et player3 qui sont respectivement présentes lorsqu'il y a une passe décisive (=tir marqué) ou un block (=tir raté)."
-
-
-
-
-
-
-
+    """Nous observons que le taux de réussite varie en fonction du type de tir et de l'action précédente. A titre d'exemple, les layups sont plus souvent mis que ratés et inversement pour les jump shots.
+    Par ailleurs, un shot pris après un rebond offensif est plus souvent réussi qu'après un rebond défensif."""
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    st.write("### Shots locations")
+    st.write("## Shots locations")
 
         ##### A REMPLIR FATIHA #####
 
-    st.write("### Players and teams stats")
+    st.write("## Players and teams stats")
 
         ##### A REMPLIR STÉPHANE #####
 
@@ -171,7 +151,7 @@ elif page == pages[1]:
 #                                                           PAGE PREPROCESSING                                                         #
 #########################################################################################################################################
 elif page == pages[2]:
-    st.write("## Preprocessing")
+    st.write("# Preprocessing")
     """L'exploration des données nous a permi de sélectionner et nettoyer les variables nécessaires à la modélisation.
     Ensuite nous avons fusionné les différents datasets pour n'en créé qu'un:"""
 
@@ -189,7 +169,36 @@ elif page == pages[2]:
 * Temprs d'entrainement accru
 * Multi colinéarité entre les variables
     """)
-    st.write("## A remplir")
+
+    st.write("#### Étapes de Preprocessing")
+
+    st.write("Une fois que le dataset est nettoyé, les étapes de preprocessing suivantes sont nécessaires :")
+
+    st.markdown("""
+    1. **Encodage des variables catégorielles** :
+        - Convertir les variables catégorielles en variables numériques à l'aide de techniques comme le One-Hot Encoding.
+    2. **Normalisation des données** :
+        - Appliquer une normalisation ou une standardisation aux variables numériques pour s'assurer qu'elles ont une échelle similaire.
+    3. **Séparation des données** :
+        - Diviser le dataset en ensembles d'entraînement et de test pour évaluer les performances du modèle.
+    4. **Gestion des variables temporelles** :
+        - Si des variables temporelles sont présentes, les transformer en caractéristiques pertinentes comme les différences de temps ou les cycles saisonniers.
+    5. **Feature Engineering** :
+        - Créer de nouvelles variables à partir des données existantes pour améliorer les performances du modèle.
+    6. **Réduction de dimensionnalité** :
+        - Utiliser des techniques comme PCA (Principal Component Analysis) pour réduire le nombre de variables tout en conservant l'essentiel de l'information.
+    7. **Gestion des valeurs aberrantes** :
+        - Identifier et traiter les valeurs aberrantes qui pourraient affecter les performances du modèle.
+    8. **Équilibrage des classes** :
+        - Si les classes sont déséquilibrées, appliquer des techniques comme le suréchantillonnage ou le sous-échantillonnage pour équilibrer les classes.
+    """)
+
+    st.write("Ces étapes permettent de préparer les données pour la modélisation et d'améliorer les performances des modèles de machine learning.")
+
+    st.dataframe(df_final)
+
+    st.write("#### Sélection des variables")
+
 
 
 #########################################################################################################################################
@@ -199,9 +208,28 @@ elif page == pages[2]:
 
 elif page == pages[3]:
 
-    st.write("## Stats des joueurs")
+
+    st.write("# Stats des joueurs")
 
     st.write("Ici nous pouvons voir les statistiques des joueurs ainsi que leurs positions préférentiel sur le terrain")
+    blank = ['Choisir un joueur']
+    liste_joueurs = df_fin['Player'].unique()
+    blank.extend(liste_joueurs)
+
+    # Add a selectbox to the sidebar:
+    result_joueur = st.selectbox(
+        'Choisir un joueur', blank
+    )
+
+    if result_joueur != '':
+        # Récupérer les saisons disponibles pour le joueur sélectionné
+        annees_disponibles = df_fin['Year'].loc[df_fin['Player'] == result_joueur].unique()
+
+        # Sidebar pour sélectionner la saison
+        result_annee = st.selectbox("Choisir une saison:", annees_disponibles)
+
+        # Afficher la saison sélectionnée
+        st.write(f"La saison sélectionnée est: {result_annee}")
 
     st.write("###", result_joueur)
     if not result_joueur == "Choisir un joueur":
@@ -283,7 +311,6 @@ elif page == pages[3]:
 
     def draw_basketball_court(joueur, annee):
         fig, ax = plt.subplots(figsize=(8, 8))
-        # Changer la couleur de fond de la figure
         background_img = mpimg.imread('reports/figures/saved_court.png')
 
         # Afficher l'image de fond
@@ -383,7 +410,32 @@ elif page == pages[3]:
 #                                                           PAGE MODELISATION                                                           #
 #########################################################################################################################################
 elif page == pages[4]:
-    st.write("### Modélisation")
+    st.write("# Modélisation")
 
-    st.write("## A remplir")
+    st.write("# A remplir")
 
+
+elif page == pages[5]:
+    st.write("# Démo")
+
+    """
+    'Shot Distance',
+    'Season Type',
+    'Shot Zone Basic_In The Paint (Non-RA)',
+    'Shot Zone Basic_Right Corner 3',
+    'Shot Zone Area_Right Side(R)',
+    'Shot Zone Range_8-16 ft.',
+    'at_home',
+    'PREVIOUS_OFF_MISSED',
+    'Age',
+    'ASTM',
+    'ORBM',
+    'FT%',
+    'height',
+    'weight',
+    'C',
+    'SG-PG',
+    'E_DEF_RATING',
+    'PCT_AREA',
+    'DETAILLED_SHOT_TYPE_JUMP SHOT'
+    """
