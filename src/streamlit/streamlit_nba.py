@@ -15,7 +15,7 @@ def load_data():
     df10 = pd.read_csv('data/processed/all_shots_2000-2020_shot_types_categorized.csv')
     df_pbp_sample = pd.read_csv('data/raw/missing_pbp_2019-2020.csv', nrows=5, index_col=0)
     df_all_shots = pd.read_csv('data/processed/all_shots-v6.csv', nrows=5, index_col=0)
-    df_final = pd.read_csv('data/processed/all_shots_final-v2.csv', nrows=5, index_col=0)
+    df_final = pd.read_csv('data/processed/all_shots_final.csv', nrows=5, index_col=0)
     return df_fin, df10, df_pbp_sample, df_all_shots, df_final
 
 # Agrandir la colonne principale d'affichage

@@ -77,7 +77,7 @@ def draw_basketball_court(joueur, annee):
     ax.set_ylim(-0.1,50)
 
     ax.set_axis_off()
-    #plt.show()
+    # plt.show()
 
     extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
     fig.savefig('reports/figures/saved_court.png', bbox_inches=extent)

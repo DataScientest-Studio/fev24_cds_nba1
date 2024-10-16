@@ -163,7 +163,9 @@ cython_debug/
 .vscode/
 
 # Data folder
-data/
+data/raw
+data/processed
+data/final
 
 # Models
 models/trained_rf.save
