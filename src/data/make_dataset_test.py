@@ -12,7 +12,7 @@ def main():
                     'Shot Zone Range_8-16 ft.',
                     'at_home',
                     'PREVIOUS_OFF_MISSED',
-                    'years_exp',
+                    'YEARS_EXP',
                     'ASTM',
                     'ORBM',
                     'FT%',
@@ -28,3 +28,6 @@ def main():
 
     # Save file
     data.to_csv("data/final/data.csv", index=False)
+
+if __name__ == "__main__" :
+    main()

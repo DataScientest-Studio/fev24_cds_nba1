@@ -69,6 +69,7 @@ def train_model(X_train, X_test, y_train, y_test):
 def scale_data(X_train, X_test):
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
+    # save the scaler fitted on the training dataset
     joblib.dump(scaler, 'models/scaler.joblib')
 
     X_test_scaled = scaler.transform(X_test)
@@ -89,7 +90,7 @@ def main():
     # Save model
     train = xgb.DMatrix(data=X_train, label=y_train)
     model = xgb.train(best_params, train)
-    model.dump_model('models/trained_xgb.json')
+    joblib.dump(model, 'models/trained_xgb.joblib')
 
 if __name__ == "__main__":
     main()

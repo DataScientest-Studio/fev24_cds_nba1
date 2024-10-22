@@ -12,17 +12,16 @@ import matplotlib.pyplot as plt
 @st.cache_data
 def load_data():
     df_fin = pd.read_csv('data/processed/stat_joueurs_streamlit.csv')
-    df10 = pd.read_csv('data/processed/all_shots_2000-2020_shot_types_categorized.csv')
     df_pbp_sample = pd.read_csv('data/raw/missing_pbp_2019-2020.csv', nrows=5, index_col=0)
     df_all_shots = pd.read_csv('data/processed/all_shots-v6.csv', nrows=5, index_col=0)
     df_final = pd.read_csv('data/processed/all_shots_final.csv', nrows=5, index_col=0)
-    return df_fin, df10, df_pbp_sample, df_all_shots, df_final
+    return df_fin, df_pbp_sample, df_all_shots, df_final
 
 # Agrandir la colonne principale d'affichage
 st.set_page_config(layout="wide")
 
 # Chargement des données
-df_fin, df10, df_pbp_sample, df_all_shots, df_final = load_data()
+df_fin, df_pbp_sample, df_all_shots, df_final = load_data()
 
 # Sidebar de navigation
 st.sidebar.title("Sommaire")
@@ -242,9 +241,9 @@ elif page == pages[3]:
     with col1:
         st.write("Moyenne de points marqués par match sur la saison")
 
-    df10.drop(df10.loc[df10['free_throw'] == 1].index, inplace=True)
-    df10['X Location'] = df10['X Location'] / 10
-    df10['Y Location'] = df10['Y Location'] / 10
+    df_final.drop(df_final.loc[df_final['free_throw'] == 1].index, inplace=True)
+    df_final['X Location'] = df_final['X Location'] / 10
+    df_final['Y Location'] = df_final['Y Location'] / 10
 
     # Contenu de la colonne de gauche
     def get_image_path(player_name):
@@ -273,10 +272,10 @@ elif page == pages[3]:
 
 
     # Application de la fonction aux colonnes X et Y
-    df10['X Location'] = df10['X Location'].apply(custom_round)
-    df10['Y Location'] = df10['Y Location'].apply(custom_round)
+    df_final['X Location'] = df_final['X Location'].apply(custom_round)
+    df_final['Y Location'] = df_final['Y Location'].apply(custom_round)
 
-    df_n = df10[['PLAYER1_NAME', 'Year', 'X Location', 'Y Location', 'target']]
+    df_n = df_final[['PLAYER1_NAME', 'Year', 'X Location', 'Y Location', 'target']]
 
     # Fonction pour convertir l'année en format 2003-04
     def convert_year_format(year):

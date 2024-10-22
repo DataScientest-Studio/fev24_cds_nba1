@@ -26,20 +26,21 @@ Project Organization
     ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
     │                         generated with `pip freeze > requirements.txt`
     │
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
+    ├── src                            <- Source code for use in this project.
+    │   ├── __init__.py                <- Makes src a Python module
+    │   ├── data
+    │   │   ├── make_dataset.py        <- Script to create the final dataset
+    │   │   └──
+    │   │
+    │   ├── features                   <- Scripts to turn raw data into features for modeling
+    │   │   ├── build_features.py
+    │   │   └── FeatureSelectionOptuna <- Class used for feature selection with Optuna
     │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
+    │   ├── models
+    │   │   ├── predict_model.py       <- Script to use the trained model to make prediction
+    │   │   └── train_model.py         <- Script to train model
     │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    │   ├── visualization  <- Scripts to create exploratory and results oriented visualizations
+    │   ├── visualization              <- Scripts to create exploratory and results oriented visualizations
     │   │   └── visualize.py
 
 --------
-
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>

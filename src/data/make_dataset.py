@@ -182,22 +182,15 @@ def detail_shot_type(data):
         93:'DRIVING BANK HOOK SHOT',
         9:'DRIVING DUNK',
         75:'DRIVING FINGER ROLL LAYUP',
-        102:'DRIVING FLOATING BANK JUMP SHOT',
-        101:'DRIVING FLOATING JUMP SHOT',
         57:'DRIVING HOOK SHOT',
         6:'DRIVING LAYUP',
         109:'DRIVING REVERSE DUNK SHOT',
         73:'DRIVING REVERSE LAYUP',
         7:'DUNK',
-        63:'FADEAWAY JUMPER',
         71:'FINGER ROLL LAYUP',
-        78:'FLOATING JUMP SHOT',
         67:'HOOK BANK SHOT',
         3:'HOOK SHOT',
-        66:'JUMP BANK SHOT',
-        1:'JUMP SHOT',
         5:'LAYUP',
-        79:'PULLUP JUMP SHOT',
         87:'PUTBACK DUNK',
         72:'PUTBACK LAYUP',
         51:'REVERSE DUNK',
@@ -206,20 +199,13 @@ def detail_shot_type(data):
         100:'RUNNING ALLEY OOP LAYUP SHOT',
         50:'RUNNING DUNK',
         76:'RUNNING FINGER ROLL LAYUP',
-        2:'RUNNING JUMP SHOT',
         41:'RUNNING LAYUP',
-        103:'RUNNING PULL',
         110:'RUNNING REVERSE DUNK SHOT',
         74:'RUNNING REVERSE LAYUP',
-        104:'STEP BACK BANK JUMP SHOT',
-        80:'STEP BACK JUMP SHOT',
         107:'TIP DUNK SHOT',
         97:'TIP LAYUP SHOT',
         96:'TURNAROUND BANK HOOK SHOT',
-        86:'TURNAROUND FADEAWAY',
-        105:'TURNAROUND FADEAWAY BANK JUMP SHOT',
         58:'TURNAROUND HOOK SHOT',
-        47:'TURNAROUND JUMP SHOT',
         42:'LAYUP',
         49:'DRIVING_DUNK',
         46:'RUNNING_JUMP_SHOT',
@@ -350,7 +336,7 @@ def main():
     data.loc[data['free_throw']==1, 'Shot Zone Range_8-16 ft.'] = True
     data.loc[data['free_throw']==1, 'Shot Distance'] = 15.0
     data.loc[data['free_throw']==1, 'X Location'] = 0
-    data.loc[data['free_throw']==1, 'Y Location'] = 150
+    data.loc[data['free_throw']==1, 'Y Location'] = 139
 
     data.fillna({'Shot Zone Basic_Above the Break 3':False}, inplace=True)
     data.fillna({'Shot Zone Basic_Backcourt': False}, inplace=True)
