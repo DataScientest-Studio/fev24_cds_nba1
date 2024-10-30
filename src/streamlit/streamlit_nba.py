@@ -4,6 +4,7 @@ import pandas as pd
 import streamlit as st
 import os
 import matplotlib.pyplot as plt
+from src.models.predict_model import predict
 #import seaborn as sns
 
 #import pickle
@@ -210,7 +211,7 @@ elif page == pages[3]:
 
     st.write("# Stats des joueurs")
 
-    st.write("Ici nous pouvons voir les statistiques des joueurs ainsi que leurs positions préférentiel sur le terrain")
+    st.write("Ici nous pouvons voir les statistiques des joueurs ainsi que leurs positions préférentielles sur le terrain")
     blank = ['Choisir un joueur']
     liste_joueurs = df_fin['Player'].unique()
     blank.extend(liste_joueurs)
@@ -414,27 +415,61 @@ elif page == pages[4]:
     st.write("# A remplir")
 
 
+#########################################################################################################################################
+#                                                           PAGE DEMO                                                                   #
+#########################################################################################################################################
+
 elif page == pages[5]:
     st.write("# Démo")
+    @st.cache_data
+    def load_demo_data():
+        df_demo = pd.read_csv("data/final/data_with_all_columns.csv")
+        return df_demo
 
-    """
-    'Shot Distance',
-    'Season Type',
-    'Shot Zone Basic_In The Paint (Non-RA)',
-    'Shot Zone Basic_Right Corner 3',
-    'Shot Zone Area_Right Side(R)',
-    'Shot Zone Range_8-16 ft.',
-    'at_home',
-    'PREVIOUS_OFF_MISSED',
-    'Age',
-    'ASTM',
-    'ORBM',
-    'FT%',
-    'height',
-    'weight',
-    'C',
-    'SG-PG',
-    'E_DEF_RATING',
-    'PCT_AREA',
-    'DETAILLED_SHOT_TYPE_JUMP SHOT'
-    """
+    df_demo = load_demo_data()
+
+    # 1. Choose player
+    blank = ['Choisir un joueur']
+    liste_joueurs = df_demo['PLAYER1_NAME'].unique()
+    blank.extend(liste_joueurs)
+
+    # Add a selectbox to choose a player:
+    result_joueur = st.selectbox(
+        'Choisir un joueur', blank
+    )
+
+    if result_joueur != '':
+        # Récupérer les saisons disponibles pour le joueur sélectionné
+        annees_disponibles = df_demo['Year'].loc[df_demo['PLAYER1_NAME'] == result_joueur].unique()
+
+        # Sidebar pour sélectionner la saison
+        result_annee = st.selectbox("Choisir une saison:", annees_disponibles)
+
+    if result_annee != '':
+        X_locations = df_demo['X Location'].loc[(df_demo['PLAYER1_NAME']==result_joueur) \
+                                                & (df_demo['Year']==result_annee)].unique()
+        result_x_loc = st.selectbox("Choisir une coordonnée X", sorted(X_locations))
+
+    if result_x_loc != '':
+        Y_locations = df_demo['Y Location'].loc[(df_demo['PLAYER1_NAME']==result_joueur) \
+                                                & (df_demo['Year']==result_annee) \
+                                                & (df_demo['X Location']==result_x_loc)].unique()
+        result_y_loc = st.selectbox("Choisir une coordonnée Y", sorted(Y_locations))
+
+    if result_y_loc != '':
+        df_to_predict = df_demo.loc[(df_demo['PLAYER1_NAME']==result_joueur) \
+                                            & (df_demo['Year']==result_annee) \
+                                            & (df_demo['X Location']==result_x_loc) \
+                                            & (df_demo['Y Location']==result_y_loc)]
+
+        columns_to_show = ['Shot Distance', 'PLAYER1_NAME', 'Year', 'X Location', 'Y Location']
+        st.dataframe(df_to_predict[columns_to_show])
+        predict_button = st.button("Prédire !")
+    if predict_button:
+        predict_columns = ['Shot Distance', 'Season Type', 'Shot Zone Basic_In The Paint (Non-RA)',
+            'Shot Zone Basic_Right Corner 3', 'Shot Zone Area_Right Side(R)', 'Shot Zone Range_8-16 ft.',
+            'at_home', 'PREVIOUS_OFF_MISSED', 'Age', 'ASTM', 'ORBM', 'FT%', 'height', 'weight', 'C', 'SG-PG',
+            'E_DEF_RATING', 'PCT_AREA', 'DETAILLED_SHOT_TYPE_JUMP SHOT']
+
+        df_to_predict = df_to_predict[predict_columns]
+        df_to_predict['']

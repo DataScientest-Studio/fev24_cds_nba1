@@ -24,17 +24,20 @@ import joblib
 # DETAILLED_SHOT_TYPE_JUMP SHOT,
 
 
-def predict(model, features: List[Any]) -> List[int]:
+def predict(features: List[Any]) -> List[int]:
+    # Load model
+    model = joblib.load("models/trained_xgb.joblib",'r+')
+    # Build and scaler features and shape it as a DMatrix
     df = build_features(features)
+    # Make the prediction
     prediction = model.predict(df)
+    # Return the raw prediction (score)
     return prediction
 
 
 def main():
-    model = joblib.load("models/trained_xgb.joblib",'r+')
-
     # test
-    res = predict(model, [19.0,0.0,False,False,False,False,0.0,False,3.0,4.577464788732394,0.704225352112676,0.814,182.88,165.0,0.0,0.0,95.5,35.08997429305913,True])
+    res = predict([19.0,0.0,False,False,False,False,0.0,False,3.0,4.577464788732394,0.704225352112676,0.814,182.88,165.0,0.0,0.0,95.5,35.08997429305913,True])
     print(res)
 
 if __name__=="__main__":
