@@ -424,7 +424,7 @@ elif page == pages[5]:
     @st.cache_data
     def load_demo_data():
         df_demo = pd.read_csv("data/final/data_with_all_columns.csv")
-        return df_demo
+        return df_demo.reset_index(drop=True)
 
     df_demo = load_demo_data()
 
@@ -445,31 +445,46 @@ elif page == pages[5]:
         # Sidebar pour sélectionner la saison
         result_annee = st.selectbox("Choisir une saison:", annees_disponibles)
 
+    # Filtre sur les coordonnées X
     if result_annee != '':
         X_locations = df_demo['X Location'].loc[(df_demo['PLAYER1_NAME']==result_joueur) \
                                                 & (df_demo['Year']==result_annee)].unique()
         result_x_loc = st.selectbox("Choisir une coordonnée X", sorted(X_locations))
 
+    # Filtre sur les coordonnées Y
     if result_x_loc != '':
         Y_locations = df_demo['Y Location'].loc[(df_demo['PLAYER1_NAME']==result_joueur) \
                                                 & (df_demo['Year']==result_annee) \
                                                 & (df_demo['X Location']==result_x_loc)].unique()
         result_y_loc = st.selectbox("Choisir une coordonnée Y", sorted(Y_locations))
 
+    # Afficher les données filtrées
     if result_y_loc != '':
         df_to_predict = df_demo.loc[(df_demo['PLAYER1_NAME']==result_joueur) \
                                             & (df_demo['Year']==result_annee) \
                                             & (df_demo['X Location']==result_x_loc) \
                                             & (df_demo['Y Location']==result_y_loc)]
 
-        columns_to_show = ['Shot Distance', 'PLAYER1_NAME', 'Year', 'X Location', 'Y Location']
+        columns_to_show = ['PLAYER1_NAME', 'Year', 'Shot Distance', 'X Location', 'Y Location', 'PREVIOUS_OFF_MISSED']
         st.dataframe(df_to_predict[columns_to_show])
         predict_button = st.button("Prédire !")
+
+    # Prédiction
     if predict_button:
         predict_columns = ['Shot Distance', 'Season Type', 'Shot Zone Basic_In The Paint (Non-RA)',
             'Shot Zone Basic_Right Corner 3', 'Shot Zone Area_Right Side(R)', 'Shot Zone Range_8-16 ft.',
             'at_home', 'PREVIOUS_OFF_MISSED', 'Age', 'ASTM', 'ORBM', 'FT%', 'height', 'weight', 'C', 'SG-PG',
             'E_DEF_RATING', 'PCT_AREA', 'DETAILLED_SHOT_TYPE_JUMP SHOT']
 
-        df_to_predict = df_to_predict[predict_columns]
-        df_to_predict['']
+        predictions = []
+        for row in df_to_predict.iterrows():
+            predictions.append(predict(row[1][predict_columns]))
+        df_to_predict['Prediction scores'] = predictions
+        df_to_predict['Prediction'] = df_to_predict['Prediction scores'].apply(lambda x: 1 if x >= 0.5 else 0)
+        def highlight_row(row):
+            if row['Prediction'] == row['target']:
+                return ['background-color: #a9dbb7'] * len(row)
+            else:
+                return ['background-color: #d4a1a3'] * len(row)
+
+        st.dataframe(df_to_predict[columns_to_show + ['Prediction scores', 'Prediction', 'target']].style.apply(highlight_row, axis=1))
