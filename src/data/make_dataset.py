@@ -269,7 +269,7 @@ def clean_data(data):
     data = data.drop(['HOMEDESCRIPTION', 'NEUTRALDESCRIPTION', 'PERSON2TYPE', 'PERSON3TYPE', 'PLAYER2_ID', 'PLAYER2_NAME', 'PLAYER2_TEAM_ABBREVIATION', \
                 'PLAYER2_TEAM_CITY', 'PLAYER2_TEAM_ID', 'PLAYER1_TEAM_NICKNAME', 'PLAYER1_ID', 'PLAYER1_TEAM_CITY', 'PLAYER1_TEAM_ID','PLAYER2_TEAM_NICKNAME', \
                 'PLAYER3_ID', 'PLAYER3_NAME', 'PLAYER3_TEAM_ABBREVIATION', 'PLAYER3_TEAM_CITY', 'PLAYER3_TEAM_ID', 'PLAYER3_TEAM_NICKNAME', 'SCORE', \
-                'SCOREMARGIN', 'VISITORDESCRIPTION', 'WCTIMESTRING', 'EVENTMSGACTIONTYPE', 'PCTIMESTRING', 'PERSON1TYPE'], axis = 1)
+                'VISITORDESCRIPTION', 'WCTIMESTRING', 'EVENTMSGACTIONTYPE', 'PCTIMESTRING', 'PERSON1TYPE'], axis = 1)
 
     # Rename target column
     data = data.rename({'EVENTMSGTYPE': 'target'}, axis=1)
@@ -328,7 +328,7 @@ def main():
     data = df_merged.merge(df_players, how='left', left_on=['PLAYER1_NAME', 'Year'], right_on=['Player', 'Year'])
 
     # drop duplicated columns
-    data = data.drop(['Game ID', 'Game Event ID', 'Player Name', 'Player', 'Team Name', 'Period', 'Player ID', 'Team ID' ], axis = 1)
+    data = data.drop(['Game ID', 'Game Event ID', 'Player Name', 'Player', 'Team Name', 'Player ID', 'Team ID' ], axis = 1)
     
     # update shot location for all free throws 
     data.loc[data['free_throw']==1, 'Shot Zone Basic_Mid-Range'] = True
@@ -336,7 +336,7 @@ def main():
     data.loc[data['free_throw']==1, 'Shot Zone Range_8-16 ft.'] = True
     data.loc[data['free_throw']==1, 'Shot Distance'] = 15.0
     data.loc[data['free_throw']==1, 'X Location'] = 0
-    data.loc[data['free_throw']==1, 'Y Location'] = 139
+    data.loc[data['free_throw']==1, 'Y Location'] = 150
 
     data.fillna({'Shot Zone Basic_Above the Break 3':False}, inplace=True)
     data.fillna({'Shot Zone Basic_Backcourt': False}, inplace=True)

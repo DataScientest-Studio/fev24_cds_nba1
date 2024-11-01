@@ -1,5 +1,4 @@
 #importer les packages
-
 import pandas as pd
 import streamlit as st
 import os
@@ -465,7 +464,7 @@ elif page == pages[5]:
                                             & (df_demo['X Location']==result_x_loc) \
                                             & (df_demo['Y Location']==result_y_loc)]
 
-        columns_to_show = ['PLAYER1_NAME', 'Year', 'Shot Distance', 'X Location', 'Y Location', 'PREVIOUS_OFF_MISSED']
+        columns_to_show = ['PLAYER1_NAME', 'Year', 'Shot Distance', 'X Location', 'Y Location']
         st.dataframe(df_to_predict[columns_to_show])
         predict_button = st.button("Prédire !")
 
