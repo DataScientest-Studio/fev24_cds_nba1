@@ -20,15 +20,12 @@ This repo is a Starting Pack for DS projects. You can rearrange the structure to
     │   ├── 2.0-sarah-data-preprocressing.ipynb                                  <- Preprocessing on the play by play data
     │   ├── Data_Exploration_NBA_Shot_Locations_Fatiha_Updated.ipynb             <- Exploration on the shot location data
     │   ├── Shot_Locations_Preprocessing_FeatureEngineering_Fatiha_Updated.ipynb <- Preprocessing on the shot locations data
-    │   ├── 3.0-merge-datasets.ipynb                                             <- Merge all datasets (plays, shot locations,
-    │   │                                                                        players stats, teams stats) into one "final" csv file.
+    │   ├── 3.0-merge-datasets.ipynb                                             <- Merge all datasets (plays, shot locations, players stats, teams stats) into one "final" csv file.
     │   ├── 4.0-get-missing-data                                                 <- Getting data from the nba stats API to fill NA.
     │   ├── 5.0-feature-selection.ipynb                                          <- Reduce dimensions using Optuna
     │   ├── 6.0-sarah-modelisation-simple                                        <- Test and compare simple ML models
     │   ├── 7.0-sarah-modelisation-per-palyer.ipynb                              <- Tests with one model per player vs one model for all players
     │   ├── 8.0-sarah-modelisation-avancee.ipynb                                 <- Optimise xgboost model with Optuna
-    │   ├── Data_Exploration_NBA_Shot_Locations_Fatiha_Updated.ipynb             <- Data exploration of the data set Shot Locations
-    │   ├── Shot_Locations_Preprocessing_FeatureEngineering_Fatiha_Updated.ipynb <- Feature Engineering for the data set Shot Locations 
     │   └── rapport_stats_joueurs.py                                             <- Functions to extract players stats per year
     │
     ├── references                      <- Data dictionaries, manuals, links, and all other explanatory materials.
