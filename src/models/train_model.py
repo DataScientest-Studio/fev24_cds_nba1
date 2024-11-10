@@ -24,9 +24,9 @@ def train_model(X_train, X_test, y_train, y_test):
             # L1 regularization weight.
             "alpha": trial.suggest_float("alpha", 1e-8, 1.0, log=True),
             # sampling ratio for training data.
-            "subsample": trial.suggest_float("subsample", 0.2, 1.0),
+            "subsample": trial.suggest_float("subsample", 0.5, 1.0),
             # sampling according to each tree.
-            "colsample_bytree": trial.suggest_float("colsample_bytree", 0.1, 1.0),
+            "colsample_bytree": trial.suggest_float("colsample_bytree", 0.5, 1.0),
         }
 
         if param["booster"] in ["gbtree", "dart"]:

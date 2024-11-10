@@ -13,15 +13,14 @@ from src.models.predict_model import predict
 def load_data():
     df_fin = pd.read_csv('data/processed/stat_joueurs_streamlit.csv')
     df_pbp_sample = pd.read_csv('data/raw/missing_pbp_2019-2020.csv', nrows=5, index_col=0)
-    df_all_shots = pd.read_csv('data/processed/all_shots-v6.csv', nrows=5, index_col=0)
-    df_final = pd.read_csv('data/processed/all_shots_final.csv', nrows=5, index_col=0)
-    return df_fin, df_pbp_sample, df_all_shots, df_final
+    df_all_shots = pd.read_csv('data/processed/all_shots-v6.csv', index_col=0)
+    return df_fin, df_pbp_sample, df_all_shots
 
 # Agrandir la colonne principale d'affichage
 st.set_page_config(layout="wide")
 
 # Chargement des données
-df_fin, df_pbp_sample, df_all_shots, df_final = load_data()
+df_fin, df_pbp_sample, df_all_shots = load_data()
 
 # Sidebar de navigation
 st.sidebar.title("Sommaire")
@@ -159,7 +158,7 @@ elif page == pages[2]:
     """Notre dataset est désormais nettoyé et fussioné, il ne contient plus de valeurs manquantes ni doublons et il ne contient que les actions de tir des 20 meilleurs joueurs du 21ème siècle."""
 
 
-    st.dataframe(df_all_shots)
+    st.dataframe(df_all_shots.head(10))
 
     """Cependant, il contient encore des variables non numériques comme les abbréviations des équipes, ainsi que des variables numériques qui risquent de fausser les résultats du modèles comme le numéro du match.
     Et surtout, notre dataset fusionné contient beaucoup de variables ce qui risque de poser divers problèmes :"""
@@ -194,7 +193,7 @@ elif page == pages[2]:
 
     st.write("Ces étapes permettent de préparer les données pour la modélisation et d'améliorer les performances des modèles de machine learning.")
 
-    st.dataframe(df_final)
+    st.dataframe(df_all_shots.head(15))
 
     st.write("#### Sélection des variables")
 
@@ -206,7 +205,6 @@ elif page == pages[2]:
 
 
 elif page == pages[3]:
-
 
     st.write("# Stats des joueurs")
 
@@ -241,9 +239,9 @@ elif page == pages[3]:
     with col1:
         st.write("Moyenne de points marqués par match sur la saison")
 
-    df_final.drop(df_final.loc[df_final['free_throw'] == 1].index, inplace=True)
-    df_final['X Location'] = df_final['X Location'] / 10
-    df_final['Y Location'] = df_final['Y Location'] / 10
+    df_all_shots.drop(df_all_shots.loc[df_all_shots['free_throw'] == 1].index, inplace=True)
+    df_all_shots['X Location'] = df_all_shots['X Location'] / 10
+    df_all_shots['Y Location'] = df_all_shots['Y Location'] / 10
 
     # Contenu de la colonne de gauche
     def get_image_path(player_name):
@@ -272,10 +270,10 @@ elif page == pages[3]:
 
 
     # Application de la fonction aux colonnes X et Y
-    df_final['X Location'] = df_final['X Location'].apply(custom_round)
-    df_final['Y Location'] = df_final['Y Location'].apply(custom_round)
+    df_all_shots['X Location'] = df_all_shots['X Location'].apply(custom_round)
+    df_all_shots['Y Location'] = df_all_shots['Y Location'].apply(custom_round)
 
-    df_n = df_final[['PLAYER1_NAME', 'Year', 'X Location', 'Y Location', 'target']]
+    df_n = df_all_shots[['PLAYER1_NAME', 'Year', 'X Location', 'Y Location', 'target']]
 
     # Fonction pour convertir l'année en format 2003-04
     def convert_year_format(year):

@@ -379,12 +379,9 @@ def main():
     # Ajout de l'offensive rate de l'équipe qui tire
     data = data.merge(metrics[['ABBREVIATION', 'Year', 'E_OFF_RATING']], left_on=['PLAYER1_TEAM_ABBREVIATION', 'Year'], right_on=['ABBREVIATION', 'Year'])
     data.drop('ABBREVIATION', axis=1, inplace=True)
-    data.dropna(inplace=True)
 
     # Ajout des années d'expérience
     data['YEARS_EXP'] = data['Year']-data['year_start']
-
-    
 
     # get dummies to match the columns' names of shots
     pct_action = pd.concat([pct_action, pd.get_dummies(pct_action.PREVIOUS, prefix="PREVIOUS")], axis=1)
@@ -408,6 +405,12 @@ def main():
 
     data = pd.concat([pd.get_dummies(data.DETAILLED_SHOT_TYPE, prefix="DETAILLED_SHOT_TYPE"), data], axis=1)
     
+    # deal with NA's
+    data.PCT_PREV_ACTION = data.PCT_PREV_ACTION.fillna(data.PCT_PREV_ACTION.median())
+    data.SCOREMARGIN = data.SCOREMARGIN.fillna(0)
+    data = data.drop(["Period", "college"], axis=1)
+    data = data.dropna()
+
     # Save full merged file
     data.to_csv("data/final/data_with_all_columns.csv", index=False)
 
@@ -430,9 +433,11 @@ def main():
                     'SG-PG',
                     'E_DEF_RATING',
                     'PCT_AREA',
-                    'DETAILLED_SHOT_TYPE_JUMP SHOT']
+                    'DETAILLED_SHOT_TYPE_JUMP SHOT',
+                    'target']
 
-    data = data[optuna_columns + ['target']]
+
+    data = data[optuna_columns]
 
     # Save file
     data.to_csv("data/final/data.csv", index=False)
