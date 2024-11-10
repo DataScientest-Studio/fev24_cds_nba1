@@ -179,25 +179,49 @@ elif page == pages[2]:
         - Appliquer une normalisation ou une standardisation aux variables numériques pour s'assurer qu'elles ont une échelle similaire.
     3. **Séparation des données** :
         - Diviser le dataset en ensembles d'entraînement et de test pour évaluer les performances du modèle.
-    4. **Gestion des variables temporelles** :
-        - Si des variables temporelles sont présentes, les transformer en caractéristiques pertinentes comme les différences de temps ou les cycles saisonniers.
-    5. **Feature Engineering** :
+    4. **Feature Engineering** :
         - Créer de nouvelles variables à partir des données existantes pour améliorer les performances du modèle.
-    6. **Réduction de dimensionnalité** :
-        - Utiliser des techniques comme PCA (Principal Component Analysis) pour réduire le nombre de variables tout en conservant l'essentiel de l'information.
-    7. **Gestion des valeurs aberrantes** :
+    5. **Réduction de dimensionnalité** :
+        - Utiliser des techniques comme PCA (Principal Component Analysis) pour réduire le nombre de variables ou la sélection de variable (cf. **Sélection des variables**).
+    6. **Gestion des valeurs aberrantes** :
         - Identifier et traiter les valeurs aberrantes qui pourraient affecter les performances du modèle.
-    8. **Équilibrage des classes** :
+    7. **Équilibrage des classes** :
         - Si les classes sont déséquilibrées, appliquer des techniques comme le suréchantillonnage ou le sous-échantillonnage pour équilibrer les classes.
     """)
 
     st.write("Ces étapes permettent de préparer les données pour la modélisation et d'améliorer les performances des modèles de machine learning.")
 
-    st.dataframe(df_all_shots.head(15))
-
     st.write("#### Sélection des variables")
+    """ Pour répondre au problème du grand nombre de variable, nous avons essayé diverses technique de réduction de dimension: Select K Best, VarianceThreshold et enfin Optuna. Optuna est un framework d’optimisation des hyperparamètres. Dans notre cas, les paramètres à optimiser sont les variables à considérer ou non. Nous avons donc paramétré Optuna de manière à optimiser la précision de nos prédictions en fonction des variables d'entraînement sélectionnées.
 
+    A chaque itération, Optuna sélectionne certaines variables, entraîne un modèle – dans ce cas un modèle XGBClassifier – puis stocke le résultat de la prédiction. Son objectif est de maximiser la précision tout en minimisant le nombre de variables. Pour cela nous avons ajouté une pénalité qui augmente avec le nombre de variables prises en compte.
 
+    Une fois tous les « trials » terminé, voici les variables restantes :"""
+    st.markdown("""
+    - 'Shot Distance',
+    - 'Season Type',
+    - 'Shot Zone Basic_In The Paint (Non-RA)',
+    - 'Shot Zone Basic_Right Corner 3',
+    - 'Shot Zone Area_Right Side(R)',
+    - 'Shot Zone Range_8-16 ft.',
+    - 'at_home',
+    - 'PREVIOUS_OFF_MISSED',
+    - 'Age',
+    - 'ASTM',
+    - 'ORBM',
+    - 'FT%',
+    - 'height',
+    - 'weight',
+    - 'C',
+    - 'SG-PG',
+    - 'E_DEF_RATING',
+    - 'PCT_AREA',
+    - 'DETAILLED_SHOT_TYPE_JUMP SHOT'
+    """)
+
+    """
+    Soit 19 variables contre 63 ! à ce stade la précision du modèle xgboost utilisé avec Optuna est de 67.79%.
+    """
 
 #########################################################################################################################################
 #                                                           PAGE STATS JOUEURS                                                          #
