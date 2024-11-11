@@ -140,8 +140,25 @@ elif page == pages[1]:
         ##### A REMPLIR FATIHA #####
 
     st.write("## Players and teams stats")
-
+    _, cent_co, _ = st.columns([1,3,1])
+    with cent_co:
+        st.image(["src/streamlit/figures/success_by_shot.png"])
         ##### A REMPLIR STÉPHANE #####
+    """Dans le cadre du projet, nous allons avant tout nous intéresser aux stats des joueurs que celle de l'équipe on 
+    moyenne par match."""
+
+    "classement des 10 joueurs avec la meilleur moyenne de point marqué par match"
+    _, cent_co, _ = st.columns([1,3,1])
+    with cent_co:
+        st.image(["src/streamlit/figures/meilleur_marqueur.png"])
+
+    "classement des 10 joueurs avec la meilleur moyenne de point marqué par matchà 2 points"
+    _, cent_co, _ = st.columns([1,3,1])
+    with cent_co:
+        st.image(["src/streamlit/figures/meilleur_marqueurs.png"])
+
+
+
 
 
 

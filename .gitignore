@@ -172,3 +172,6 @@ models/trained_rf.save
 
 # Local Tests
 notebooks/8.0-sarah-modelisation-deep*
+
+#
+.idea/
