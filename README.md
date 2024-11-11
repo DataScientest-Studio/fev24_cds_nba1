@@ -26,7 +26,12 @@ This repo is a Starting Pack for DS projects. You can rearrange the structure to
     │   ├── 6.0-sarah-modelisation-simple                                        <- Test and compare simple ML models
     │   ├── 7.0-sarah-modelisation-per-palyer.ipynb                              <- Tests with one model per player vs one model for all players
     │   ├── 8.0-sarah-modelisation-avancee.ipynb                                 <- Optimise xgboost model with Optuna
-    │   └── rapport_stats_joueurs.py                                             <- Functions to extract players stats per year
+    │   ├── rapport_stats_joueurs.py                                             <- Functions to extract players stats per year
+    │   ├── Modeling_epochs100_DeepLearning_LeNet_Original_datasetV5_Fatiha.ipynb           <- Deep learning modeling with LeNet Architecture
+    │   ├── Modeling_epochs100_DeepLearning_LeNet_and_Undersampling_datasetV5_Fatiha.ipynb  <- Deep learning modeling with LeNet + Undersampling
+    │   ├── Modeling_epochs100_DeepLearning_LeNet_and_weights_datasetV5_Fatiha.ipynb        <- Deep learning modeling with LeNet + weights
+    │   ├── Modeling_epochs100_DeepLearning_reducedVariables19_datasetV5_Fatiha.ipynb       <- Deep learning modeling with LeNet on a reduced variables dataset
+    │   └── Modeling_epochs100_DeepLearning_LeNet_xgboost_datasetV5_Fatiha.ipynb            <- Deep learning modeling with LeNet combined with XGBoost
     │
     ├── references                      <- Data dictionaries, manuals, links, and all other explanatory materials.
     │
