@@ -138,7 +138,27 @@ elif page == pages[1]:
     st.write("## Shots locations")
 
         ##### A REMPLIR FATIHA #####
+    """Le fichier 'Shot locations' recensent les positions/distance/zone de tirs dans le terrain pour chaque joueur pour les années entre 1997 et 2020. Il contient 22 colonnes avec 4.7 millions lignes. Après la selection des 20 meilleurs joueurs entre 2000 et 2020, on obtient autour de 300K entrées sans doublons ou valeurs manquantes.
+    """
 
+    df_shotLocations = pd.read_csv('data/processed/Shot_Locations_top_20_players_2000to2020.csv')
+    st.dataframe(df_shotLocations)
+
+    st.image("src/streamlit/figures/distributions_tirs_XYLocations_allPlayers_top20Players_refined.png")
+
+    st.image("src/streamlit/figures/distributions_tirs_XYLocations_shotZoneBasic_Top20Players.png")
+
+    st.image("src/streamlit/figures/Capture_tirs_shot_zone_basic_ShotMadeFlag.png")
+
+    st.image("src/streamlit/figures/distributions_tirs_XYLocations_shotZoneArea_Top20Players.png")
+
+    st.image("src/streamlit/figures/distributions_tirs_XLocation_ShotMadeFlag_KDE_AllPlayers.png")
+
+    st.image("src/streamlit/figures/distributions_tirs_XLocation_ShotMadeFlag_KDE_AllPlayers.png")
+
+    st.image("src/streamlit/figures/distributions_tirs_ShotMadeFalg_Normalized_AllPlayers.png")
+
+    
     st.write("## Players and teams stats")
 
         ##### A REMPLIR STÉPHANE #####
