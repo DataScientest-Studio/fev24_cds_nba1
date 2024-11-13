@@ -528,7 +528,7 @@ elif page == pages[4]:
             st.write(f"Précision du modèle XGBoost : {accuracy_ml2}")
 
 
-    # Paramètres et informations spécifiques au modèle sélectionné
+    #choix d'un model de DL
     if model_choice == "Deep Learning":
         st.subheader("Modèles de Deep Learning")
 
