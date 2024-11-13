@@ -167,11 +167,6 @@ elif page == pages[1]:
     """Dans le cadre du projet, nous allons avant tout nous intéresser aux stats des joueurs que celle de l'équipe on 
     moyenne par match."""
 
-    "classement des 10 joueurs avec la meilleur moyenne de point marqué par match"
-    _, cent_co, _ = st.columns([1,3,1])
-    with cent_co:
-        st.image(["src/streamlit/figures/meilleur_marqueur.png"])
-
     "classement des 10 joueurs avec la meilleur moyenne de point marqué par matchà 2 points"
     _, cent_co, _ = st.columns([1,3,1])
     with cent_co:
@@ -469,9 +464,108 @@ elif page == pages[3]:
 #########################################################################################################################################
 elif page == pages[4]:
     st.write("# Modélisation")
+    st.title("Présentation Interactive du Modèle")
+    st.write("Explorons les performances de nos modèles Machine Learning et Deep Learning sur notre jeu de données.")
+    st.write("Commençons tout d'abord par regarder les données à notre disposition")
 
-    st.write("# A remplir")
+    if st.checkbox("Afficher les données brutes"):
+        st.write(df_all_shots.head())
 
+    # Sélection de colonnes à explorer
+    selected_cols = st.multiselect("Sélectionnez les colonnes à explorer", options=df_all_shots.columns,
+                                   default=['Shot Distance', 'Season Type', 'Shot Zone Basic_In The Paint (Non-RA)',
+                                            'Shot Zone Basic_Right Corner 3','Shot Zone Area_Right Side(R)',
+                                            'Shot Zone Range_8-16 ft.','at_home','PREVIOUS_OFF_MISSED',
+                                            'Age','ASTM','ORBM','FT%','height','weight','C','SG-PG','E_DEF_RATING',
+                                            'PCT_AREA','DETAILLED_SHOT_TYPE'])
+    if selected_cols:
+        st.write(df_all_shots[selected_cols].describe())
+
+    model_choice = st.radio("Choisissez le modèle à explorer", ("Machine Learning", "Deep Learning"))
+
+    # Paramètres et informations spécifiques au modèle sélectionné
+    if model_choice == "Machine Learning":
+        st.subheader("Modèles de Machine Learning")
+
+        # choix du model de machine learning
+        model_choice1 = st.selectbox("Choisissez votre modèle de Machine learning parmi ceux de la liste suivante:",
+                                    ["Random Forest", "XGBoost"])
+
+        #présentation des hyperparamètre du model de machine learning
+        #random forest
+        if model_choice1 == "Random Forest":
+            #st.subheader("Random Forest")
+            # Paramètres fictifs du modèle de machine learning
+            ml_config1 = {
+                "Modèle": "Random Forest",
+                "n_estimators": 311,
+                "max_depth": 14,
+                "min_samples_split": 23,
+                "min_samples_leaf": 4,
+                "Criterion": "gini"
+            }
+            st.json(ml_config1)  # Affiche la configuration spécifique au modèle ML
+
+            accuracy_ml1 = 0.6831
+            st.write(f"Précision du modèle Random Forest : {accuracy_ml1}")
+
+        if model_choice1 == "XGBoost":
+            #st.subheader("XGBoost")
+            # Paramètres fictifs du modèle de machine learning
+            ml_config2 = {
+                "Modèle": "XGBoost",
+                "booster": "dart",
+                "subsample": 0.7152,
+                "max_depth": 9,
+                "colsample_bytree": 0.8437,
+                "min_child_weight": 9,
+                "grow_policy": "lossguide"
+            }
+            st.json(ml_config2)  # Affiche la configuration spécifique au modèle ML
+
+
+            accuracy_ml2 = 0.6825
+            st.write(f"Précision du modèle XGBoost : {accuracy_ml2}")
+
+
+    # Paramètres et informations spécifiques au modèle sélectionné
+    if model_choice == "Deep Learning":
+        st.subheader("Modèles de Deep Learning")
+
+        # choix du model de deep learning
+        model_choice2 = st.selectbox("Choisissez votre modèle de deep learning parmi ceux de la liste suivante:",
+                                    ["LSTM", "LeNet"])
+
+        #présentation des hyperparamètre du model de deep learning
+        #random forest
+        if model_choice2 == "LSTM":
+            # Paramètres fictifs du modèle de machine learning
+            dl_config1 = {
+                "Modèle": "Réseau LSTM",
+                "Nombre de couches": 3,
+                "Taille des couches": [64, 32, 1],
+                "Fonction d'activation": "relu",
+                "Taux d'apprentissage": 0.001
+            }
+            st.json(dl_config1)  # Affiche la configuration spécifique au modèle ML
+
+            accuracy_dl1 = 0.6334
+            st.write(f"Précision du modèle Random Forest : {accuracy_dl1}")
+
+        if model_choice2 == "LeNet":
+            # Paramètres fictifs du modèle de machine learning
+            dl_config2 = {
+                "Modèle": "LeNet",
+                "Nombre de couches": 4,
+                "Taille des couches": [32, 64, 128, 1],
+                "Fonction d'activation": "relu",
+                "Taux d'apprentissage": 0.001
+            }
+            st.json(dl_config2)  # Affiche la configuration spécifique au modèle ML
+
+
+            accuracy_dl2 = 0.6946
+            st.write(f"Précision du modèle XGBoost : {accuracy_dl2}")
 
 #########################################################################################################################################
 #                                                           PAGE DEMO                                                                   #
