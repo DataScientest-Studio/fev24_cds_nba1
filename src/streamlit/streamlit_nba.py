@@ -154,7 +154,7 @@ elif page == pages[1]:
 
     st.image("src/streamlit/figures/distributions_tirs_XLocation_ShotMadeFlag_KDE_AllPlayers.png")
 
-    st.image("src/streamlit/figures/distributions_tirs_XLocation_ShotMadeFlag_KDE_AllPlayers.png")
+    st.image("src/streamlit/figures/distributions_tirs_YLocation_ShotMadeFlag_KDE_AllPlayers.png")
 
     
     st.write("## Players and teams stats")
