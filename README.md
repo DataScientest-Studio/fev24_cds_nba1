@@ -65,6 +65,13 @@ This repo is a Starting Pack for DS projects. You can rearrange the structure to
 
 ``` bash
 git clone https://github.com/DataScientest-Studio/fev24_cds_nba1.git
+cd fev24_cds_nba1
+cd data
+wget https://datascientest-nba.s3.eu-north-1.amazonaws.com/data.tar
+tar -xvf data.tar
+rm data.tar
+cd ..
+python3 -m venv .venv
 pip install -r requirements.txt
 pip install -e .
 streamlit run src/streamlit/streamlit_nba.py
