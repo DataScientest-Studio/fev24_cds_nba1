@@ -149,8 +149,10 @@ elif page == pages[1]:
     st.image("src/streamlit/figures/distributions_tirs_XYLocations_shotZoneBasic_Top20Players.png")
 
     st.image("src/streamlit/figures/Capture_tirs_shot_zone_basic_ShotMadeFlag.png")
-
+    
     st.image("src/streamlit/figures/distributions_tirs_XYLocations_shotZoneArea_Top20Players.png")
+
+    st.image("src/streamlit/figures/distributions_tirs_XYLocations_ShotZoneArea_NotNormalized_ShotMadeFlag_AllPlayers.png")
 
     st.image("src/streamlit/figures/distributions_tirs_XLocation_ShotMadeFlag_KDE_AllPlayers.png")
 
