@@ -551,7 +551,7 @@ elif page == pages[4]:
             st.json(dl_config1)  # Affiche la configuration spécifique au modèle ML
 
             accuracy_dl1 = 0.6334
-            st.write(f"Précision du modèle Random Forest : {accuracy_dl1}")
+            st.write(f"Précision du modèle LSTM : {accuracy_dl1}")
 
         if model_choice2 == "LeNet":
             # Paramètres fictifs du modèle de machine learning
@@ -566,7 +566,7 @@ elif page == pages[4]:
 
 
             accuracy_dl2 = 0.6946
-            st.write(f"Précision du modèle XGBoost : {accuracy_dl2}")
+            st.write(f"Précision du modèle LeNet : {accuracy_dl2}")
 
 #########################################################################################################################################
 #                                                           PAGE DEMO                                                                   #
