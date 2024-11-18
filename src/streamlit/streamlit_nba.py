@@ -158,6 +158,11 @@ elif page == pages[1]:
 
     st.image("src/streamlit/figures/distributions_tirs_YLocation_ShotMadeFlag_KDE_AllPlayers.png")
 
+    st.image("src/streamlit/figures/distributions_tirs_ShotDistance_NotNormalized_ShotMadeFlag_KDE_AllPlayers.png")
+
+    st.image("src/streamlit/figures/distributions_tirs_MinutesRemaining_NotNormalized_ShotMadeFlag_AllPlayers.png")
+
+    st.image("src/streamlit/figures/distributions_tirs_SecondsRemaining_NotNormalized_ShotMadeFlag_AllPlayers.png")
     
     st.write("## Players and teams stats")
     _, cent_co, _ = st.columns([1,3,1])
