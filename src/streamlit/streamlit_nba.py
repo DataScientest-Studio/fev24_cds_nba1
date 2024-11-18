@@ -144,15 +144,9 @@ elif page == pages[1]:
     df_shotLocations = pd.read_csv('data/processed/Shot_Locations_top_20_players_2000to2020.csv')
     st.dataframe(df_shotLocations)
 
-    st.image("src/streamlit/figures/distributions_tirs_XYLocations_allPlayers_top20Players_refined.png")
-
     st.image("src/streamlit/figures/distributions_tirs_XYLocations_shotZoneBasic_Top20Players.png")
 
     st.image("src/streamlit/figures/Capture_tirs_shot_zone_basic_ShotMadeFlag.png")
-    
-    st.image("src/streamlit/figures/distributions_tirs_XYLocations_shotZoneArea_Top20Players.png")
-
-    st.image("src/streamlit/figures/distributions_tirs_XYLocations_ShotZoneArea_NotNormalized_ShotMadeFlag_AllPlayers.png")
 
     st.image("src/streamlit/figures/distributions_tirs_ShotDistance_NotNormalized_ShotMadeFlag_KDE_AllPlayers.png")
 
