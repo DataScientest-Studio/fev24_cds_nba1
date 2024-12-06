@@ -156,17 +156,6 @@ elif page == pages[1]:
 
     st.image("src/streamlit/figures/distributions_tirs_SecondsRemaining_NotNormalized_ShotMadeFlag_AllPlayers.png")
     
-    st.write("## Players and teams stats")
-    _, cent_co, _ = st.columns([1,3,1])
-    
-        ##### A REMPLIR STÉPHANE #####
-    """Dans le cadre du projet, nous allons avant tout nous intéresser aux stats des joueurs que celle de l'équipe on 
-    moyenne par match."""
-
-    "classement des 10 joueurs avec la meilleur moyenne de point marqué par matchà 2 points"
-    _, cent_co, _ = st.columns([1,3,1])
-    with cent_co:
-        st.image(["src/streamlit/figures/meilleur_marqueurs.png"])
 
 
 #########################################################################################################################################
@@ -651,13 +640,14 @@ elif page == pages[6]:
     st.title("Conclusion")
     """
     Notre étude a permis de développer plusieurs modèles prédictifs atteignant une accuracy moyenne de 68%. Ces résultats sont significativement supérieurs à une classification aléatoire ou à une prédiction naïve basée uniquement sur la distribution des tirs ratés (56%), démontrant ainsi la pertinence de notre approche.
-    
+
     Néanmoins, plusieurs pistes d'amélioration se dégagent pour optimiser ces performances :
 
     - L'intégration de nouvelles variables comme la distance défenseur-tireur
     - La prise en compte de l'angle de tir
     - L'enrichissement des données avec d'autres métriques contextuelles
-        
+
+    On pourrait aussi améliorer notre étude en ajoutant une partie d'interprétabilité des résultats grace aux SHAP values par exemple.    
     
     Il est important de noter que même dans des conditions optimales, une prédiction parfaite reste illusoire. L'exemple des lancers francs est particulièrement éloquent : même dans cette situation de jeu parfaitement contrôlée, les meilleurs joueurs n'atteignent qu'environ 80% de réussite, illustrant la part incompressible d'incertitude inhérente au basketball.
 
