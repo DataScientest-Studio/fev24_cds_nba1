@@ -550,6 +550,8 @@ elif page == pages[4]:
             }
             st.json(dl_config2)  # Affiche la configuration spécifique au modèle ML
             
+            st.image("src/streamlit/figures/Capture_Accuracy_Loss_epochs100_LeNet_19Variables.png")
+            
             st.image("src/streamlit/figures/Capture_Accuracy_Loss_epochs100_LeNet_Original_Updated.png") 
             
             accuracy_dl2 = 0.6946
