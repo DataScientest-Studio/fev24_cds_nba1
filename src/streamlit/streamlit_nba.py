@@ -24,7 +24,7 @@ df_fin, df_pbp_sample, df_all_shots = load_data()
 
 # Sidebar de navigation
 st.sidebar.title("Sommaire")
-pages = ["Description du projet", "Exploration des données", "Preprocessing",  "Modélisation", "Stat des  joueurs", "Démo !"]
+pages = ["Description du projet", "Exploration des données", "Stat des  joueurs",  "Preprocessing",  "Modélisation", "Démo !", "Conclusion"]
 page = st.sidebar.radio("Aller vers la page :", pages)
 
 
@@ -56,7 +56,13 @@ if page == pages[0] :
     st.write("Nous sommes face à un problème de classification, nous devons déterminer si le tir rentre ou non dans le panier en nous basant sur les données de localisation du tir, les performances du joueur et de son équipe, la situation de jeu. ")
 
     st.write("## Datasets")
+    """
+    - dataset des tirs NBA entre 1997 et 2019 : https://www.kaggle.com/jonathangmwl/nba-shot-locations
+- dataset des actions de chaque match entre 2000 et 2020 : https://sports-statistics.com/sports-data/nba-basketball-datasets-csv-files/
+- dataset des bilans d’équipe entre 2014 et 2018 : https://www.kaggle.com/nathanlauga/nba-games?select=ranking.csv
+- dataset des joueurs de NBA depuis 1950 : https://www.kaggle.com/drgilermo/nba-players-stats?select=Players.csv
 
+    """
     st.write("L’ensemble de ces données peuvent également être récupérées via des API qui scrappent NBA.com, le site officiel.")
 
     st.write("Notamment https://github.com/swar/nba_api, grâce aux contributeurs que nous pourrons utiliser afin d’obtenir les données actualisées depuis le site NBA.com.")
@@ -94,10 +100,6 @@ elif page == pages[1]:
     _, cent_co, _ = st.columns([1,3,1])
     with cent_co:
         st.image("src/streamlit/figures/action_types.png")
-        "Les dix principaux types de tirs :"
-
-    with cent_co:
-        st.image("src/streamlit/figures/shot_types.png")
 
 
     "Après exploration du fichier nous décidons de garder les actions dont la variable EVENTMSGTYPE est :"
@@ -156,8 +158,7 @@ elif page == pages[1]:
     
     st.write("## Players and teams stats")
     _, cent_co, _ = st.columns([1,3,1])
-    with cent_co:
-        st.image(["src/streamlit/figures/success_by_shot.png"])
+    
         ##### A REMPLIR STÉPHANE #####
     """Dans le cadre du projet, nous allons avant tout nous intéresser aux stats des joueurs que celle de l'équipe on 
     moyenne par match."""
@@ -168,210 +169,12 @@ elif page == pages[1]:
         st.image(["src/streamlit/figures/meilleur_marqueurs.png"])
 
 
-
-
-
-
-#########################################################################################################################################
-#                                                           PAGE PREPROCESSING                                                         #
-#########################################################################################################################################
-elif page == pages[2]:
-    st.write("# Preprocessing")
-    """L'exploration des données nous a permi de sélectionner et nettoyer les variables nécessaires à la modélisation.
-    Ensuite nous avons fusionné les différents datasets pour n'en créé qu'un:"""
-
-    st.image("src/streamlit/figures/data_merge.png")
-
-    """Notre dataset est désormais nettoyé et fussioné, il ne contient plus de valeurs manquantes ni doublons et il ne contient que les actions de tir des 20 meilleurs joueurs du 21ème siècle."""
-
-
-    st.dataframe(df_all_shots.head(10))
-
-    """Cependant, il contient encore des variables non numériques comme les abbréviations des équipes, ainsi que des variables numériques qui risquent de fausser les résultats du modèles comme le numéro du match.
-    Et surtout, notre dataset fusionné contient beaucoup de variables ce qui risque de poser divers problèmes :"""
-    st.markdown("""
-        * Risque de surapprentissage
-* Temprs d'entrainement accru
-* Multi colinéarité entre les variables
-    """)
-
-    st.write("#### Étapes de Preprocessing")
-
-    st.write("Une fois que le dataset est nettoyé, les étapes de preprocessing suivantes sont nécessaires :")
-
-    st.markdown("""
-    1. **Encodage des variables catégorielles** :
-        - Convertir les variables catégorielles en variables numériques à l'aide de techniques comme le One-Hot Encoding.
-    2. **Normalisation des données** :
-        - Appliquer une normalisation ou une standardisation aux variables numériques pour s'assurer qu'elles ont une échelle similaire.
-    3. **Séparation des données** :
-        - Diviser le dataset en ensembles d'entraînement et de test pour évaluer les performances du modèle.
-    4. **Feature Engineering** :
-        - Créer de nouvelles variables à partir des données existantes pour améliorer les performances du modèle.
-    5. **Réduction de dimensionnalité** :
-        - Utiliser des techniques comme PCA (Principal Component Analysis) pour réduire le nombre de variables ou la sélection de variable (cf. **Sélection des variables**).
-    6. **Gestion des valeurs aberrantes** :
-        - Identifier et traiter les valeurs aberrantes qui pourraient affecter les performances du modèle.
-    7. **Équilibrage des classes** :
-        - Si les classes sont déséquilibrées, appliquer des techniques comme le suréchantillonnage ou le sous-échantillonnage pour équilibrer les classes.
-    """)
-
-    st.write("Ces étapes permettent de préparer les données pour la modélisation et d'améliorer les performances des modèles de machine learning.")
-
-    st.write("#### Sélection des variables")
-    """ Pour répondre au problème du grand nombre de variable, nous avons essayé diverses technique de réduction de dimension: Select K Best, VarianceThreshold et enfin Optuna. Optuna est un framework d’optimisation des hyperparamètres. Dans notre cas, les paramètres à optimiser sont les variables à considérer ou non. Nous avons donc paramétré Optuna de manière à optimiser la précision de nos prédictions en fonction des variables d'entraînement sélectionnées.
-
-    A chaque itération, Optuna sélectionne certaines variables, entraîne un modèle – dans ce cas un modèle XGBClassifier – puis stocke le résultat de la prédiction. Son objectif est de maximiser la précision tout en minimisant le nombre de variables. Pour cela nous avons ajouté une pénalité qui augmente avec le nombre de variables prises en compte.
-
-    Une fois tous les « trials » terminé, voici les variables restantes :"""
-    st.markdown("""
-    - 'Shot Distance',
-    - 'Season Type',
-    - 'Shot Zone Basic_In The Paint (Non-RA)',
-    - 'Shot Zone Basic_Right Corner 3',
-    - 'Shot Zone Area_Right Side(R)',
-    - 'Shot Zone Range_8-16 ft.',
-    - 'at_home',
-    - 'PREVIOUS_OFF_MISSED',
-    - 'Age',
-    - 'ASTM',
-    - 'ORBM',
-    - 'FT%',
-    - 'height',
-    - 'weight',
-    - 'C',
-    - 'SG-PG',
-    - 'E_DEF_RATING',
-    - 'PCT_AREA',
-    - 'DETAILLED_SHOT_TYPE_JUMP SHOT'
-    """)
-
-    """
-    Soit 19 variables contre 63 ! à ce stade la précision du modèle xgboost utilisé avec Optuna est de 67.79%.
-    """
-#########################################################################################################################################
-#                                                           PAGE MODELISATION                                                           #
-#########################################################################################################################################
-elif page == pages[3]:
-    st.write("# Modélisation")
-    st.title("Présentation Interactive du Modèle")
-    st.write("Explorons les performances de nos modèles Machine Learning et Deep Learning sur notre jeu de données.")
-    st.write("Commençons tout d'abord par regarder les données à notre disposition")
-
-    if st.checkbox("Afficher les données brutes"):
-        st.write(df_all_shots.head())
-
-    # Sélection de colonnes à explorer
-    selected_cols = st.multiselect("Sélectionnez les colonnes à explorer", options=df_all_shots.columns,
-                                   default=['Shot Distance', 'Season Type', 'Shot Zone Basic_In The Paint (Non-RA)',
-                                            'Shot Zone Basic_Right Corner 3','Shot Zone Area_Right Side(R)',
-                                            'Shot Zone Range_8-16 ft.','at_home','PREVIOUS_OFF_MISSED',
-                                            'Age','ASTM','ORBM','FT%','height','weight','C','SG-PG','E_DEF_RATING',
-                                            'PCT_AREA','DETAILLED_SHOT_TYPE'])
-    if selected_cols:
-        st.write(df_all_shots[selected_cols].describe())
-
-    model_choice = st.radio("Choisissez le modèle à explorer", ("Machine Learning", "Deep Learning"))
-
-    # Paramètres et informations spécifiques au modèle sélectionné
-    if model_choice == "Machine Learning":
-        st.subheader("Modèles de Machine Learning")
-        """
-        Tous les algorithmes testés sont relativement équivalents avec une précision sur l’ensemble de test entre 0.67 et 0.69. \n
-        L’arbre de décision et les forêts aléatoires offrent des résultats similaires, nous poursuivrons cependant avec les forêts aléatoires qui sont basées sur les arbres de décisions et permettent de réduire le risque de surapprentissage.
-        Le modèle XGBoost Classifier donne les meilleurs résultats à la fois en précision et en temps d'entraînement. \n
-
-        Pour notre cas d'usage, les modèles basés sur les arbres de décisions semblent plus appropriés.
-        """
-        st.image("src/streamlit/figures/ML_results.png")
-        # choix du model de machine learning
-        model_choice1 = st.selectbox("Choisissez votre modèle de Machine learning parmi ceux de la liste suivante:",
-                                    ["Random Forest", "XGBoost"])
-
-        #présentation des hyperparamètre du model de machine learning
-        #random forest
-        if model_choice1 == "Random Forest":
-            #st.subheader("Random Forest")
-            # Paramètres fictifs du modèle de machine learning
-            ml_config1 = {
-                "Modèle": "Random Forest",
-                "n_estimators": 311,
-                "max_depth": 14,
-                "min_samples_split": 23,
-                "min_samples_leaf": 4,
-                "Criterion": "gini"
-            }
-            st.json(ml_config1)  # Affiche la configuration spécifique au modèle ML
-
-            accuracy_ml1 = 0.6831
-            st.write(f"Précision du modèle Random Forest : {accuracy_ml1}")
-
-        if model_choice1 == "XGBoost":
-            #st.subheader("XGBoost")
-            # Paramètres fictifs du modèle de machine learning
-            ml_config2 = {
-                "Modèle": "XGBoost",
-                "booster": "dart",
-                "subsample": 0.7152,
-                "max_depth": 9,
-                "colsample_bytree": 0.8437,
-                "min_child_weight": 9,
-                "grow_policy": "lossguide"
-            }
-            st.json(ml_config2)  # Affiche la configuration spécifique au modèle ML
-
-
-            accuracy_ml2 = 0.6825
-            st.write(f"Précision du modèle XGBoost : {accuracy_ml2}")
-
-
-    #choix d'un model de DL
-    if model_choice == "Deep Learning":
-        st.subheader("Modèles de Deep Learning")
-
-        # choix du model de deep learning
-        model_choice2 = st.selectbox("Choisissez votre modèle de deep learning parmi ceux de la liste suivante:",
-                                    ["LSTM", "LeNet"])
-
-        #présentation des hyperparamètre du model de deep learning
-        #random forest
-        if model_choice2 == "LSTM":
-            # Paramètres fictifs du modèle de machine learning
-            dl_config1 = {
-                "Modèle": "Réseau LSTM",
-                "Nombre de couches": 3,
-                "Taille des couches": [64, 32, 1],
-                "Fonction d'activation": "relu",
-                "Taux d'apprentissage": 0.001
-            }
-            st.json(dl_config1)  # Affiche la configuration spécifique au modèle ML
-
-            accuracy_dl1 = 0.6334
-            st.write(f"Précision du modèle LSTM : {accuracy_dl1}")
-
-        if model_choice2 == "LeNet":
-            # Paramètres fictifs du modèle de machine learning
-            dl_config2 = {
-                "Modèle": "LeNet",
-                "Nombre de couches": 4,
-                "Taille des couches": [32, 64, 128, 1],
-                "Fonction d'activation": "relu",
-                "Taux d'apprentissage": 0.001
-            }
-            st.json(dl_config2)  # Affiche la configuration spécifique au modèle ML
-            
-            st.image("src/streamlit/figures/Capture_Accuracy_Loss_epochs100_LeNet_Original_Updated.png") 
-            
-            accuracy_dl2 = 0.6946
-            st.write(f"Précision du modèle LeNet : {accuracy_dl2}")
-
-
 #########################################################################################################################################
 #                                                           PAGE STATS JOUEURS                                                          #
 #########################################################################################################################################
 
 
-elif page == pages[4]:
+elif page == pages[2]:
 
     st.write("# Stats des joueurs")
 
@@ -570,6 +373,199 @@ elif page == pages[4]:
 
 
 
+#########################################################################################################################################
+#                                                           PAGE PREPROCESSING                                                         #
+#########################################################################################################################################
+elif page == pages[3]:
+    st.write("# Preprocessing")
+    """L'exploration des données nous a permi de sélectionner et nettoyer les variables nécessaires à la modélisation.
+    Ensuite nous avons fusionné les différents datasets pour n'en créé qu'un:"""
+
+    st.image("src/streamlit/figures/data_merge.png")
+
+    """Notre dataset est désormais nettoyé et fussioné, il ne contient plus de valeurs manquantes ni doublons et il ne contient que les actions de tir des 20 meilleurs joueurs du 21ème siècle."""
+
+
+    st.dataframe(df_all_shots.head(10))
+
+    """Cependant, il contient encore des variables non numériques comme les abbréviations des équipes, ainsi que des variables numériques qui risquent de fausser les résultats du modèles comme le numéro du match.
+    Et surtout, notre dataset fusionné contient beaucoup de variables ce qui risque de poser divers problèmes :"""
+    st.markdown("""
+        * Risque de surapprentissage
+* Temprs d'entrainement accru
+* Multi colinéarité entre les variables
+    """)
+
+    st.write("#### Étapes de Preprocessing")
+
+    st.write("Une fois que le dataset est nettoyé, les étapes de preprocessing suivantes sont nécessaires :")
+
+    st.markdown("""
+    1. **Encodage des variables catégorielles** :
+        - Convertir les variables catégorielles en variables numériques à l'aide de techniques comme le One-Hot Encoding.
+    2. **Normalisation des données** :
+        - Appliquer une normalisation ou une standardisation aux variables numériques pour s'assurer qu'elles ont une échelle similaire.
+    3. **Séparation des données** :
+        - Diviser le dataset en ensembles d'entraînement et de test pour évaluer les performances du modèle.
+    4. **Feature Engineering** :
+        - Créer de nouvelles variables à partir des données existantes pour améliorer les performances du modèle.
+    5. **Réduction de dimensionnalité** :
+        - Utiliser des techniques comme PCA (Principal Component Analysis) pour réduire le nombre de variables ou la sélection de variable (cf. **Sélection des variables**).
+    6. **Gestion des valeurs aberrantes** :
+        - Identifier et traiter les valeurs aberrantes qui pourraient affecter les performances du modèle.
+    7. **Équilibrage des classes** :
+        - Si les classes sont déséquilibrées, appliquer des techniques comme le suréchantillonnage ou le sous-échantillonnage pour équilibrer les classes.
+    """)
+
+    st.write("Ces étapes permettent de préparer les données pour la modélisation et d'améliorer les performances des modèles de machine learning.")
+
+    st.write("#### Sélection des variables")
+    """ Pour répondre au problème du grand nombre de variable, nous avons essayé diverses technique de réduction de dimension: Select K Best, VarianceThreshold et enfin Optuna. Optuna est un framework d’optimisation des hyperparamètres. Dans notre cas, les paramètres à optimiser sont les variables à considérer ou non. Nous avons donc paramétré Optuna de manière à optimiser la précision de nos prédictions en fonction des variables d'entraînement sélectionnées.
+
+    A chaque itération, Optuna sélectionne certaines variables, entraîne un modèle – dans ce cas un modèle XGBClassifier – puis stocke le résultat de la prédiction. Son objectif est de maximiser la précision tout en minimisant le nombre de variables. Pour cela nous avons ajouté une pénalité qui augmente avec le nombre de variables prises en compte.
+
+    Une fois tous les « trials » terminé, voici les variables restantes :"""
+    st.markdown("""
+    - 'Shot Distance',
+    - 'Season Type',
+    - 'Shot Zone Basic_In The Paint (Non-RA)',
+    - 'Shot Zone Basic_Right Corner 3',
+    - 'Shot Zone Area_Right Side(R)',
+    - 'Shot Zone Range_8-16 ft.',
+    - 'at_home',
+    - 'PREVIOUS_OFF_MISSED',
+    - 'Age',
+    - 'ASTM',
+    - 'ORBM',
+    - 'FT%',
+    - 'height',
+    - 'weight',
+    - 'C',
+    - 'SG-PG',
+    - 'E_DEF_RATING',
+    - 'PCT_AREA',
+    - 'DETAILLED_SHOT_TYPE_JUMP SHOT'
+    """)
+
+    """
+    Soit 19 variables contre 63 ! à ce stade la précision du modèle xgboost utilisé avec Optuna est de 67.79%.
+    """
+#########################################################################################################################################
+#                                                           PAGE MODELISATION                                                           #
+#########################################################################################################################################
+elif page == pages[4]:
+    st.write("# Modélisation")
+    st.title("Présentation Interactive du Modèle")
+    st.write("Explorons les performances de nos modèles Machine Learning et Deep Learning sur notre jeu de données.")
+    st.write("Commençons tout d'abord par regarder les données à notre disposition")
+
+    if st.checkbox("Afficher les données brutes"):
+        st.write(df_all_shots.head())
+
+    # Sélection de colonnes à explorer
+    selected_cols = st.multiselect("Sélectionnez les colonnes à explorer", options=df_all_shots.columns,
+                                   default=['Shot Distance', 'Season Type', 'Shot Zone Basic_In The Paint (Non-RA)',
+                                            'Shot Zone Basic_Right Corner 3','Shot Zone Area_Right Side(R)',
+                                            'Shot Zone Range_8-16 ft.','at_home','PREVIOUS_OFF_MISSED',
+                                            'Age','ASTM','ORBM','FT%','height','weight','C','SG-PG','E_DEF_RATING',
+                                            'PCT_AREA','DETAILLED_SHOT_TYPE'])
+    if selected_cols:
+        st.write(df_all_shots[selected_cols].describe())
+
+    model_choice = st.radio("Choisissez le modèle à explorer", ("Machine Learning", "Deep Learning"))
+
+    # Paramètres et informations spécifiques au modèle sélectionné
+    if model_choice == "Machine Learning":
+        st.subheader("Modèles de Machine Learning")
+        """
+        Tous les algorithmes testés sont relativement équivalents avec une précision sur l’ensemble de test entre 0.67 et 0.69. \n
+        L’arbre de décision et les forêts aléatoires offrent des résultats similaires, nous poursuivrons cependant avec les forêts aléatoires qui sont basées sur les arbres de décisions et permettent de réduire le risque de surapprentissage.
+        Le modèle XGBoost Classifier donne les meilleurs résultats à la fois en précision et en temps d'entraînement. \n
+
+        Pour notre cas d'usage, les modèles basés sur les arbres de décisions semblent plus appropriés.
+        """
+        st.image("src/streamlit/figures/ML_results.png")
+        # choix du model de machine learning
+        model_choice1 = st.selectbox("Choisissez votre modèle de Machine learning parmi ceux de la liste suivante:",
+                                    ["Random Forest", "XGBoost"])
+
+        #présentation des hyperparamètre du model de machine learning
+        #random forest
+        if model_choice1 == "Random Forest":
+            #st.subheader("Random Forest")
+            # Paramètres fictifs du modèle de machine learning
+            ml_config1 = {
+                "Modèle": "Random Forest",
+                "n_estimators": 311,
+                "max_depth": 14,
+                "min_samples_split": 23,
+                "min_samples_leaf": 4,
+                "Criterion": "gini"
+            }
+            st.json(ml_config1)  # Affiche la configuration spécifique au modèle ML
+
+            accuracy_ml1 = 0.6831
+            st.write(f"Précision du modèle Random Forest : {accuracy_ml1}")
+
+        if model_choice1 == "XGBoost":
+            #st.subheader("XGBoost")
+            # Paramètres fictifs du modèle de machine learning
+            ml_config2 = {
+                "Modèle": "XGBoost",
+                "booster": "dart",
+                "subsample": 0.7152,
+                "max_depth": 9,
+                "colsample_bytree": 0.8437,
+                "min_child_weight": 9,
+                "grow_policy": "lossguide"
+            }
+            st.json(ml_config2)  # Affiche la configuration spécifique au modèle ML
+
+
+            accuracy_ml2 = 0.6825
+            st.write(f"Précision du modèle XGBoost : {accuracy_ml2}")
+
+
+    #choix d'un model de DL
+    if model_choice == "Deep Learning":
+        st.subheader("Modèles de Deep Learning")
+
+        # choix du model de deep learning
+        model_choice2 = st.selectbox("Choisissez votre modèle de deep learning parmi ceux de la liste suivante:",
+                                    ["LSTM", "LeNet"])
+
+        #présentation des hyperparamètre du model de deep learning
+        #random forest
+        if model_choice2 == "LSTM":
+            # Paramètres fictifs du modèle de machine learning
+            dl_config1 = {
+                "Modèle": "Réseau LSTM",
+                "Nombre de couches": 3,
+                "Taille des couches": [64, 32, 1],
+                "Fonction d'activation": "relu",
+                "Taux d'apprentissage": 0.001
+            }
+            st.json(dl_config1)  # Affiche la configuration spécifique au modèle ML
+
+            accuracy_dl1 = 0.6334
+            st.write(f"Précision du modèle LSTM : {accuracy_dl1}")
+
+        if model_choice2 == "LeNet":
+            # Paramètres fictifs du modèle de machine learning
+            dl_config2 = {
+                "Modèle": "LeNet",
+                "Nombre de couches": 4,
+                "Taille des couches": [32, 64, 128, 1],
+                "Fonction d'activation": "relu",
+                "Taux d'apprentissage": 0.001
+            }
+            st.json(dl_config2)  # Affiche la configuration spécifique au modèle ML
+            
+            st.image("src/streamlit/figures/Capture_Accuracy_Loss_epochs100_LeNet_Original_Updated.png") 
+            
+            accuracy_dl2 = 0.6946
+            st.write(f"Précision du modèle LeNet : {accuracy_dl2}")
+
 
 
 #########################################################################################################################################
@@ -645,3 +641,28 @@ elif page == pages[5]:
                 return ['background-color: #d4a1a3'] * len(row)
 
         st.dataframe(df_to_predict[columns_to_show + ['Prediction scores', 'Prediction', 'target']].style.apply(highlight_row, axis=1))
+
+
+#########################################################################################################################################
+#                                                           PAGE CONCLUSION                                                             #
+#########################################################################################################################################
+
+elif page == pages[6]:
+    st.title("Conclusion")
+    """
+    Notre étude a permis de développer plusieurs modèles prédictifs atteignant une accuracy moyenne de 68%. Ces résultats sont significativement supérieurs à une classification aléatoire ou à une prédiction naïve basée uniquement sur la distribution des tirs ratés (56%), démontrant ainsi la pertinence de notre approche.
+    
+    Néanmoins, plusieurs pistes d'amélioration se dégagent pour optimiser ces performances :
+
+    - L'intégration de nouvelles variables comme la distance défenseur-tireur
+    - La prise en compte de l'angle de tir
+    - L'enrichissement des données avec d'autres métriques contextuelles
+        
+    
+    Il est important de noter que même dans des conditions optimales, une prédiction parfaite reste illusoire. L'exemple des lancers francs est particulièrement éloquent : même dans cette situation de jeu parfaitement contrôlée, les meilleurs joueurs n'atteignent qu'environ 80% de réussite, illustrant la part incompressible d'incertitude inhérente au basketball.
+
+    D'un point de vue métier, notre étude offre deux contributions majeures :
+        
+    1. Une analyse approfondie des patterns de tir qui permet aux équipes d'optimiser leur stratégie défensive en fonction des zones de prédilection et d'efficacité de chaque joueur
+    2. Un modèle prédictif qui, bien qu'imparfait, fournit un outil supplémentaire d'aide à la décision pour les analystes et les coaches.
+    """
