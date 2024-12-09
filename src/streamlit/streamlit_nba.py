@@ -555,13 +555,15 @@ elif page == pages[4]:
             #accuracy_dl2 = 0.6583
             #st.write(f"Précision du modèle LeNet : {accuracy_dl2}")
             st.subheader("Validation Accuracy: 0.6583, Training Accuracy: 0.6599 , un gap faible (≈ 0.16%)")
+            st.text("Le modèle généralise bien : les performances sur les données d'entraînement et de validation sont similaires.")
 
-            st.title("# Data set avec 73 variables")
+
+            st.title("Data set avec 73 variables")
             st.image("src/streamlit/figures/Capture_Accuracy_Loss_epochs100_LeNet_Original_Updated.png")
             #accuracy_dl2 = 0.6946
             #st.write(f"Précision du modèle LeNet : {accuracy_dl2}")
             st.subheader("Validation Accuracy: 0.6946, Training Accuracy: 0.7027 , gap modéré (≈ 0.81%)")
-
+            st.text("Un début d'overfitting : le modèle commence à mieux performer sur les données d'entraînement que sur la validation.")
 
 #########################################################################################################################################
 #                                                           PAGE DEMO                                                                   #
