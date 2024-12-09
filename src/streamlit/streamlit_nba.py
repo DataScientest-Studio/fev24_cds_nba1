@@ -148,21 +148,22 @@ elif page == pages[1]:
 
 
     """La distribution des tirs effectués par les 20 meilleurs joueurs de la NBA entre 2000 et 2020."""
-    st.text("Chaque point correspond à un tir, et sa position sur le graphique indique l'endroit exact du terrain où le tir a été tenté. Les différentes couleurs représentent les différentes zones de tir")
+    """Chaque point correspond à un tir, et sa position sur le graphique indique l'endroit exact du terrain où le tir a été tenté."""
+    """Les différentes couleurs représentent les différentes zones de tir"""
     st.image("src/streamlit/figures/distributions_tirs_XYLocations_shotZoneBasic_Top20Players.png")
 
-    st.text("pour chacune de ces zones dans un terrain de basket, on a pu extraire le nombre des tirs ratés (en orange) et réussis (en bleu)")
+    """pour chacune de ces zones dans un terrain de basket, on a pu extraire le nombre des tirs ratés (en orange) et réussis (en bleu)"""
     st.image("src/streamlit/figures/Capture_tirs_shot_zone_basic_ShotMadeFlag.png")
 
-    st.text("On passe à la distribution de la fréquence des tirs tentés (en orange) et réussis (en bleu)")
-    st.text("en fonction de leur distance par rapport au panier.Chaque barre représente une tranche de distance.")
+    """On passe à la distribution de la fréquence des tirs tentés (en orange) et réussis (en bleu) en fonction de leur distance par rapport au panier."""
+    """Chaque barre représente une tranche de distance."""
     st.image("src/streamlit/figures/distributions_tirs_ShotDistance_NotNormalized_ShotMadeFlag_KDE_AllPlayers.png")
 
-    st.text("La répartition des tirs tentés (en orange) et réussis (en bleu), en fonction des minutes restantantes à jouer.")
-    st.image("src/streamlit/figures/distributions_tirs_MinutesRemaining_NotNormalized_ShotMadeFlag_AllPlayers.png")
+    """La répartition des tirs tentés (en orange) et réussis (en bleu), en fonction des minutes restantantes à jouer."""
+    """src/streamlit/figures/distributions_tirs_MinutesRemaining_NotNormalized_ShotMadeFlag_AllPlayers.png"""
 
-    st.text("Le graphique suivant illustre la fréquence à laquelle des tirs sont tentés (en orange) et réussis (en bleu)") 
-    st.text("à différents moments d'un match de basket-ball, cette fois-ci en fonction du nombre de secondes restantes. On observe une concentration importante de tirs dans les dernières secondes.")
+    """Le graphique suivant illustre la fréquence à laquelle des tirs sont tentés (en orange) et réussis (en bleu) à différents moments d'un match de basket-ball,"""
+    """cette fois-ci en fonction du nombre de secondes restantes. On observe une concentration importante de tirs dans les dernières secondes."""
     st.image("src/streamlit/figures/distributions_tirs_SecondsRemaining_NotNormalized_ShotMadeFlag_AllPlayers.png")
     
 
