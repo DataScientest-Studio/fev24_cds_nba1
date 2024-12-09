@@ -154,7 +154,9 @@ elif page == pages[1]:
 
     """pour chacune de ces zones dans un terrain de basket, on a pu extraire le nombre des tirs ratés (en orange) et réussis (en bleu)"""
     st.image("src/streamlit/figures/Capture_tirs_shot_zone_basic_ShotMadeFlag.png")
-
+    """Une dominance du nombre de tir dans la zone restricted area, pour les tirs tentés ou réussis. Cela confirme l'importance du jeu intérieur """
+    """Le taux de réussite est plus élevé dans la zone restricted area (bleu plus haut que orange), ce qui est logique étant donné la proximité du panier."""
+    
     """On passe à la distribution de la fréquence des tirs tentés (en orange) et réussis (en bleu) en fonction de leur distance par rapport au panier."""
     """Chaque barre représente une tranche de distance."""
     st.image("src/streamlit/figures/distributions_tirs_ShotDistance_NotNormalized_ShotMadeFlag_KDE_AllPlayers.png")
