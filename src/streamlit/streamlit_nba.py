@@ -165,7 +165,12 @@ elif page == pages[1]:
     
     """**La répartition des tirs tentés (en orange) et réussis (en bleu), en fonction des minutes restantantes à jouer.**"""
     st.image("src/streamlit/figures/distributions_tirs_MinutesRemaining_NotNormalized_ShotMadeFlag_AllPlayers.png")
+    """
+    On remarque une forte concentration de tirs en fin de match/quart-temps (0 à 1 minutes) et une diminution progressive du nombre de tirs au début du match (11-12 minutes).
+    - le nombre de tirs est important à 0 minute : Tension en fin de match/quart-temps, Stratégies offensives, Importance de chaque possession
+    - le nombre de tirs est moins important à 11 minutes / négligeable à 12 minutes: Début de période, Échauffement, Gestion des fautes
 
+    """
     
     """Le graphique suivant illustre **la fréquence à laquelle des tirs sont tentés (en orange) et réussis (en bleu)** à différents moments d'un match de basket-ball,"""
     """cette fois-ci **en fonction du nombre de secondes restantes**. On observe une concentration importante de tirs dans les dernières secondes."""
