@@ -160,7 +160,7 @@ elif page == pages[1]:
     st.image("src/streamlit/figures/distributions_tirs_ShotDistance_NotNormalized_ShotMadeFlag_KDE_AllPlayers.png")
 
     """La répartition des tirs tentés (en orange) et réussis (en bleu), en fonction des minutes restantantes à jouer."""
-    """src/streamlit/figures/distributions_tirs_MinutesRemaining_NotNormalized_ShotMadeFlag_AllPlayers.png"""
+    st.image("src/streamlit/figures/distributions_tirs_MinutesRemaining_NotNormalized_ShotMadeFlag_AllPlayers.png")
 
     """Le graphique suivant illustre la fréquence à laquelle des tirs sont tentés (en orange) et réussis (en bleu) à différents moments d'un match de basket-ball,"""
     """cette fois-ci en fonction du nombre de secondes restantes. On observe une concentration importante de tirs dans les dernières secondes."""
