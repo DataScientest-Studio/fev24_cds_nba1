@@ -147,7 +147,7 @@ elif page == pages[1]:
     st.dataframe(df_shotLocations)
 
 
-    st.text("La distribution des tirs effectués par les 20 meilleurs joueurs de la NBA entre 2000 et 2020.")
+    """La distribution des tirs effectués par les 20 meilleurs joueurs de la NBA entre 2000 et 2020."""
     st.text("Chaque point correspond à un tir, et sa position sur le graphique indique l'endroit exact du terrain où le tir a été tenté. Les différentes couleurs représentent les différentes zones de tir")
     st.image("src/streamlit/figures/distributions_tirs_XYLocations_shotZoneBasic_Top20Players.png")
 
