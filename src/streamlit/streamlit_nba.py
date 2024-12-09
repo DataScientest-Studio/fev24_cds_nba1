@@ -376,8 +376,8 @@ elif page == pages[2]:
 #########################################################################################################################################
 elif page == pages[3]:
     st.write("# Preprocessing")
-    """L'exploration des données nous a permi de sélectionner et nettoyer les variables nécessaires à la modélisation.
-    Ensuite nous avons fusionné les différents datasets pour n'en créé qu'un:"""
+    """L'exploration des données nous a permi de nettoyer, enrichir, dichotomiser et selectionner les variables nécessaires à la modélisation.
+    Le jeu de données final a été construit en fusionnant les quatre datasets résultants:"""
 
     st.image("src/streamlit/figures/data_merge.png")
 
