@@ -556,7 +556,7 @@ elif page == pages[4]:
             st.write(f"Précision du modèle LeNet : {accuracy_dl2}")
             st.write("validation Accuracy: 0.6583, Training Accuracy: 0.6599 , un gap faible (≈ 0.16%) ")
 
-             st.write("Data set avec 73 variables")
+            st.write("Data set avec 73 variables")
             st.image("src/streamlit/figures/Capture_Accuracy_Loss_epochs100_LeNet_Original_Updated.png")
             accuracy_dl2 = 0.6946
             st.write(f"Précision du modèle LeNet : {accuracy_dl2}")
