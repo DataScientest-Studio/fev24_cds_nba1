@@ -159,16 +159,15 @@ elif page == pages[1]:
     
     """**La distribution de la fréquence des tirs tentés (en orange) et réussis (en bleu) en fonction de leur distance par rapport au panier**. Chaque barre représente une tranche de distance."""
     st.image("src/streamlit/figures/distributions_tirs_ShotDistance_NotNormalized_ShotMadeFlag_KDE_AllPlayers.png")
-    """la majorité des tirs, qu'ils soient réussis ou ratés, sont effectués à courte distance, moins de 3 pieds"""
-    """Le taux de réussite est plus élevé pour les tirs proches du panier"""
-    """quand la distance augmente, le taux de réussite diminue, ce qui est conforme à l'intuition."""
+    """la majorité des tirs, qu'ils soient réussis ou ratés, sont effectués à courte distance, moins de 4 pieds"""
+    """Le taux de réussite est plus élevé pour les tirs proches du panier. Quand la distance augmente, le taux de réussite diminue, ce qui est conforme à l'intuition."""
 
     
     """**La répartition des tirs tentés (en orange) et réussis (en bleu), en fonction des minutes restantantes à jouer.**"""
     st.image("src/streamlit/figures/distributions_tirs_MinutesRemaining_NotNormalized_ShotMadeFlag_AllPlayers.png")
 
     
-    """Le graphique suivant illustre **la fréquence à laquelle des tirs sont tentés (en orange) et réussis (en bleu) à différents moments d'un match de basket-ball,"""
+    """Le graphique suivant illustre **la fréquence à laquelle des tirs sont tentés (en orange) et réussis (en bleu)** à différents moments d'un match de basket-ball,"""
     """cette fois-ci **en fonction du nombre de secondes restantes**. On observe une concentration importante de tirs dans les dernières secondes."""
     st.image("src/streamlit/figures/distributions_tirs_SecondsRemaining_NotNormalized_ShotMadeFlag_AllPlayers.png")
     
