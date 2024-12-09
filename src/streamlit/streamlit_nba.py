@@ -170,7 +170,11 @@ elif page == pages[1]:
     """Le graphique suivant illustre **la fréquence à laquelle des tirs sont tentés (en orange) et réussis (en bleu)** à différents moments d'un match de basket-ball,"""
     """cette fois-ci **en fonction du nombre de secondes restantes**. On observe une concentration importante de tirs dans les dernières secondes."""
     st.image("src/streamlit/figures/distributions_tirs_SecondsRemaining_NotNormalized_ShotMadeFlag_AllPlayers.png")
-    
+    """
+    Pourquoi un pic de tirs à 0 seconde ?
+    - parce que la fin d'un quart-temps/match est le moment le plus évident. Les équipes cherchent à marquer un dernier panier pour augmenter leur avance ou réduire l'écart.
+    - Stratégies offensives de fin de match mise par les entraîneurs comme les tentatives de paniers à trois points.
+    """
 
 
 #########################################################################################################################################
