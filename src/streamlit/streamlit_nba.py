@@ -550,22 +550,17 @@ elif page == pages[4]:
             }
             st.json(dl_config2)  # Affiche la configuration spécifique au modèle ML
 
-            st.write("# Data set avec 19 variables")
             st.title("Data set avec 19 variables")
-            st.header("Data set avec 19 variables")
-            st.subheader("Data set avec 19 variables")
-            st.text("Data set avec 19 variables")
-            
             st.image("src/streamlit/figures/Capture_Accuracy_Loss_epochs100_LeNet_19Variables.png")
             #accuracy_dl2 = 0.6583
             #st.write(f"Précision du modèle LeNet : {accuracy_dl2}")
-            st.write("# Validation Accuracy: 0.6583, Training Accuracy: 0.6599 , un gap faible (≈ 0.16%) ")
+            st.subheader("# Validation Accuracy: 0.6583, Training Accuracy: 0.6599 , un gap faible (≈ 0.16%)")
 
-            st.write("# Data set avec 73 variables")
+            st.title("# Data set avec 73 variables")
             st.image("src/streamlit/figures/Capture_Accuracy_Loss_epochs100_LeNet_Original_Updated.png")
             #accuracy_dl2 = 0.6946
             #st.write(f"Précision du modèle LeNet : {accuracy_dl2}")
-            st.write("# Validation Accuracy: 0.6946, Training Accuracy: 0.7027 , gap modéré (≈ 0.81%)  ")
+            st.subheader("# Validation Accuracy: 0.6946, Training Accuracy: 0.7027 , gap modéré (≈ 0.81%)")
 
 
 #########################################################################################################################################
