@@ -152,18 +152,18 @@ elif page == pages[1]:
     st.image("src/streamlit/figures/distributions_tirs_XYLocations_shotZoneBasic_Top20Players.png")
 
     """pour chacune de ces zones dans un terrain de basket, on a pu extraire **le nombre des tirs ratés (en orange) et réussis (en bleu)**"""
-    """Une dominance du nombre de tir dans la zone restricted area, pour les tirs tentés ou réussis. Cela confirme l'importance du jeu intérieur """
+    """Une dominance du nombre de tir dans la zone restricted area, pour les tirs ratés ou réussis. Cela confirme l'importance du jeu intérieur """
     """Le taux de réussite est plus élevé dans la zone restricted area (bleu plus haut que orange), ce qui est logique étant donné la proximité du panier."""
     st.image("src/streamlit/figures/Capture_tirs_shot_zone_basic_ShotMadeFlag.png")
 
     
-    """**La distribution de la fréquence des tirs tentés (en orange) et réussis (en bleu) en fonction de leur distance par rapport au panier**. Chaque barre représente une tranche de distance."""
+    """**La distribution de la fréquence des tirs ratés (en orange) et réussis (en bleu) en fonction de leur distance par rapport au panier**. Chaque barre représente une tranche de distance."""
     st.image("src/streamlit/figures/distributions_tirs_ShotDistance_NotNormalized_ShotMadeFlag_KDE_AllPlayers.png")
     """la majorité des tirs, qu'ils soient réussis ou ratés, sont effectués à courte distance, moins de 3 pieds"""
     """Le taux de réussite est plus élevé pour les tirs proches du panier. Quand la distance augmente, le taux de réussite diminue, ce qui est conforme à l'intuition."""
 
     
-    """**La répartition des tirs tentés (en orange) et réussis (en bleu), en fonction des minutes restantantes à jouer.**"""
+    """**La répartition des tirs ratés (en orange) et réussis (en bleu), en fonction des minutes restantantes à jouer.**"""
     st.image("src/streamlit/figures/distributions_tirs_MinutesRemaining_NotNormalized_ShotMadeFlag_AllPlayers.png")
     """
     On remarque une forte concentration de tirs en fin de match/quart-temps (0 à 1 minutes) et une diminution progressive du nombre de tirs au début du match (11-12 minutes).
@@ -172,7 +172,7 @@ elif page == pages[1]:
 
     """
     
-    """Le graphique suivant illustre **la fréquence à laquelle des tirs sont tentés (en orange) et réussis (en bleu)** à différents moments d'un match de basket-ball,"""
+    """Le graphique suivant illustre **la fréquence à laquelle des tirs sont ratés (en orange) et réussis (en bleu)** à différents moments d'un match de basket-ball,"""
     """cette fois-ci **en fonction du nombre de secondes restantes**. On observe une concentration importante de tirs dans les dernières secondes."""
     st.image("src/streamlit/figures/distributions_tirs_SecondsRemaining_NotNormalized_ShotMadeFlag_AllPlayers.png")
     """
